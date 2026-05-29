@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import { BrandLogoLink } from './BrandLogo'
 import { site } from '../data/site'
 
 const linkHover = 'hover:text-neutral-900 dark:hover:text-white'
@@ -9,7 +10,7 @@ export default function Footer() {
       <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
         <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
           <div>
-            <p className="text-xl font-black tracking-tighter uppercase">{site.brandName}</p>
+            <BrandLogoLink imageClassName="h-10 w-10 object-contain" />
             <p className="mt-3 max-w-xs text-sm text-neutral-600 dark:text-neutral-400">
               Premium streetwear built for people who take their style seriously. Trustworthy quality, every time.
             </p>

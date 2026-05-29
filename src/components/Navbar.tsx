@@ -1,6 +1,6 @@
-import { Link, NavLink } from 'react-router-dom'
+import { NavLink } from 'react-router-dom'
 import { useCart } from '../context/CartContext'
-import { site } from '../data/site'
+import { BrandLogoLink } from './BrandLogo'
 import ThemeToggle from './ThemeToggle'
 
 const navLinkClass = ({ isActive }: { isActive: boolean }) =>
@@ -16,10 +16,7 @@ export default function Navbar() {
   return (
     <header className="sticky top-0 z-40 border-b border-neutral-200 bg-white/95 backdrop-blur dark:border-neutral-800 dark:bg-neutral-950/95">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
-        <Link
-          to="/"
-          className="text-xl font-black tracking-tighter uppercase"
-        >{site.brandName}</Link>
+        <BrandLogoLink />
 
         <nav className="hidden items-center gap-8 md:flex">
           <NavLink to="/shop" className={navLinkClass}>

@@ -1,4 +1,5 @@
 ﻿import { formatPrice, FREE_SHIPPING_THRESHOLD } from '../lib/currency'
+import type { Product } from '../types/product'
 
 export type SocialLink = {
   label: string
@@ -8,6 +9,8 @@ export type SocialLink = {
 
 export const site = {
   brandName: 'AYRO',
+  logo: '/images/ayro/logo.jpeg',
+  logoAlt: 'AYRO logo',
   contactEmail: 'hello@theofficialayro.com',
   hero: {
     eyebrow: 'New Season',
@@ -38,7 +41,19 @@ export const site = {
     },
   ] satisfies SocialLink[],
   shippingNote: 'Prices in ZAR · Ships throughout South Africa',
+  shop: {
+    title: 'Shop',
+    subtitle:
+      'AYRO essentials, graphics, and limited drops — priced in ZAR.',
+  },
 } as const
+
+export const categoryLabels: Record<Product['category'] | 'all', string> = {
+  all: 'All',
+  essentials: 'Essentials',
+  graphics: 'Graphics',
+  limited: 'Limited',
+}
 
 export function getPrimarySocial(): SocialLink {
   return (

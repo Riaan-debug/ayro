@@ -1,12 +1,22 @@
 import { Link } from 'react-router-dom'
 import type { Product } from '../types/product'
+import { categoryLabels } from '../data/site'
 import { formatPrice } from '../lib/currency'
 
 type Props = {
   product: Product
+  variant?: 'default' | 'grid'
 }
 
-export default function ProductCard({ product }: Props) {
+function sizeRange(sizes: string[]): string {
+  if (sizes.length === 0) return ''
+  if (sizes.length === 1) return sizes[0]
+  return `${sizes[0]}–${sizes[sizes.length - 1]}`
+}
+
+export default function ProductCard({ product, variant = 'default' }: Props) {
+  const isGrid = variant === 'grid'
+
   return (
     <Link
       to={`/product/${product.slug}`}
@@ -21,7 +31,9 @@ export default function ProductCard({ product }: Props) {
         <img
           src={product.image}
           alt={product.name}
-          className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+          className={`h-full w-full transition-transform duration-500 group-hover:scale-105 ${
+            isGrid ? 'object-contain p-3' : 'object-cover'
+          }`}
           loading="lazy"
         />
       </div>
@@ -30,8 +42,14 @@ export default function ProductCard({ product }: Props) {
           <h3 className="text-sm font-semibold text-neutral-900 group-hover:underline dark:text-white">
             {product.name}
           </h3>
-          <p className="mt-1 text-xs capitalize text-neutral-500 dark:text-neutral-400">
-            {product.category}
+          <p className="mt-1 text-xs text-neutral-500 dark:text-neutral-400">
+            {categoryLabels[product.category]}
+            {product.sizes.length > 0 && (
+              <span className="text-neutral-400 dark:text-neutral-500">
+                {' '}
+                · {sizeRange(product.sizes)}
+              </span>
+            )}
           </p>
         </div>
         <p className="shrink-0 text-sm font-medium">{formatPrice(product.price)}</p>

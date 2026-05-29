@@ -25,8 +25,26 @@ body {
   }
 }
 
+@keyframes splashLogoIn {
+  from {
+    transform: scale(0.94);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+.splash-logo-visible {
+  opacity: 1;
+  animation: splashLogoIn 1s ease-out both;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .motion-safe\:animate-\[fadeIn_0\.6s_ease-out_both\] {
+    animation: none;
+  }
+
+  .splash-logo-visible {
     animation: none;
   }
 }

@@ -1,5 +1,6 @@
 import { Routes, Route } from 'react-router-dom'
 import Layout from './components/Layout'
+import SplashIntro from './components/SplashIntro'
 import Home from './pages/Home'
 import Shop from './pages/Shop'
 import ProductDetail from './pages/ProductDetail'
@@ -10,7 +11,9 @@ import Contact from './pages/Contact'
 
 export default function App() {
   return (
-    <Routes>
+    <>
+      <SplashIntro />
+      <Routes>
       <Route element={<Layout />}>
         <Route index element={<Home />} />
         <Route path="shop" element={<Shop />} />
@@ -20,6 +23,7 @@ export default function App() {
         <Route path="about" element={<About />} />
         <Route path="contact" element={<Contact />} />
       </Route>
-    </Routes>
+      </Routes>
+    </>
   )
 }
