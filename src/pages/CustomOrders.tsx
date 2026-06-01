@@ -1,10 +1,12 @@
 import { useState } from 'react'
+import { forms, submitToFormspree } from '../lib/forms'
 import { btnPrimaryClass, inputClass } from '../lib/ui'
 
-type FormState = 'idle' | 'submitted'
+type FormState = 'idle' | 'submitting' | 'submitted' | 'error'
 
 export default function CustomOrders() {
   const [status, setStatus] = useState<FormState>('idle')
+  const [error, setError] = useState('')
   const [form, setForm] = useState({
     name: '',
     email: '',
@@ -20,8 +22,27 @@ export default function CustomOrders() {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }))
   }
 
-  function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
+    setStatus('submitting')
+    setError('')
+
+    const result = await submitToFormspree(forms.customOrder, {
+      _subject: 'AYRO custom order request',
+      name: form.name,
+      email: form.email,
+      company: form.company,
+      quantity: form.quantity,
+      designNotes: form.designNotes,
+      timeline: form.timeline,
+    })
+
+    if (!result.ok) {
+      setError(result.error)
+      setStatus('error')
+      return
+    }
+
     setStatus('submitted')
   }
 
@@ -164,11 +185,16 @@ export default function CustomOrders() {
           />
         </div>
 
+        {error && (
+          <p className="text-sm text-red-600 dark:text-red-400" role="alert">{error}</p>
+        )}
+
         <button
           type="submit"
-          className={`w-full ${btnPrimaryClass}`}
+          disabled={status === 'submitting'}
+          className={`w-full ${btnPrimaryClass} disabled:opacity-60`}
         >
-          Submit Request
+          {status === 'submitting' ? 'Submitting…' : 'Submit Request'}
         </button>
       </form>
     </div>

@@ -1,14 +1,34 @@
 import { useState } from 'react'
 import { site } from '../data/site'
+import { forms, submitToFormspree } from '../lib/forms'
 import { btnPrimaryClass, inputClass } from '../lib/ui'
 
+type Status = 'idle' | 'submitting' | 'submitted' | 'error'
+
 export default function Contact() {
-  const [submitted, setSubmitted] = useState(false)
+  const [status, setStatus] = useState<Status>('idle')
+  const [error, setError] = useState('')
   const [form, setForm] = useState({ name: '', email: '', message: '' })
 
-  function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
-    setSubmitted(true)
+    setStatus('submitting')
+    setError('')
+
+    const result = await submitToFormspree(forms.contact, {
+      _subject: 'AYRO contact form',
+      name: form.name,
+      email: form.email,
+      message: form.message,
+    })
+
+    if (!result.ok) {
+      setError(result.error)
+      setStatus('error')
+      return
+    }
+
+    setStatus('submitted')
   }
 
   return (
@@ -22,7 +42,9 @@ export default function Contact() {
       <div className="mt-8 space-y-3 text-sm text-neutral-600 dark:text-neutral-400">
         <p>
           <span className="font-semibold text-neutral-900 dark:text-white">Email:</span>{' '}
-          {site.contactEmail}
+          <a href={`mailto:${site.contactEmail}`} className="underline hover:no-underline">
+            {site.contactEmail}
+          </a>
         </p>
         {site.socials.map((s) => (
           <p key={s.label}>
@@ -34,7 +56,7 @@ export default function Contact() {
         ))}
       </div>
 
-      {submitted ? (
+      {status === 'submitted' ? (
         <p className="mt-10 rounded-lg bg-neutral-100 px-4 py-6 text-sm text-neutral-700 dark:bg-neutral-900 dark:text-neutral-300">
           Message sent! We&apos;ll get back to you at {form.email} soon.
         </p>
@@ -52,7 +74,12 @@ export default function Contact() {
             <label htmlFor="contact-message" className="text-xs font-semibold uppercase tracking-widest">Message</label>
             <textarea id="contact-message" required rows={5} value={form.message} onChange={(e) => setForm((f) => ({ ...f, message: e.target.value }))} className={`mt-2 ${inputClass}`} />
           </div>
-          <button type="submit" className={`w-full ${btnPrimaryClass}`}>Send Message</button>
+          {error && (
+            <p className="text-sm text-red-600 dark:text-red-400" role="alert">{error}</p>
+          )}
+          <button type="submit" disabled={status === 'submitting'} className={`w-full ${btnPrimaryClass} disabled:opacity-60`}>
+            {status === 'submitting' ? 'Sending…' : 'Send Message'}
+          </button>
         </form>
       )}
     </div>

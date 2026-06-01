@@ -7,7 +7,35 @@ export type SocialLink = {
   url: string
 }
 
-export const site = {
+export type SiteContent = {
+  brandName: string
+  logo: string
+  logoAlt: string
+  contactEmail: string
+  hero: {
+    eyebrow: string
+    headline: [string, string]
+    subcopy: string
+    image: string
+    imageAlt: string
+  }
+  promo: string
+  story: {
+    title: string
+    body: string
+    image: string
+    imageAlt: string
+  }
+  primarySocial: 'instagram'
+  socials: SocialLink[]
+  shippingNote: string
+  shop: {
+    title: string
+    subtitle: string
+  }
+}
+
+export const site: SiteContent = {
   brandName: 'AYRO',
   logo: '/images/ayro/logo.jpeg',
   logoAlt: 'AYRO logo',
@@ -46,7 +74,7 @@ export const site = {
     subtitle:
       'AYRO essentials, graphics, and limited drops — priced in ZAR.',
   },
-} as const
+}
 
 export const categoryLabels: Record<Product['category'] | 'all', string> = {
   all: 'All',

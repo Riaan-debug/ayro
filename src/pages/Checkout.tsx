@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useCart } from '../context/CartContext'
+import { site } from '../data/site'
 import { formatPrice, FREE_SHIPPING_THRESHOLD, SHIPPING_COST } from '../lib/currency'
 import { btnPrimaryClass, inputClass } from '../lib/ui'
 
@@ -22,6 +23,9 @@ export default function Checkout() {
     return (
       <div className="mx-auto max-w-lg px-4 py-24 text-center">
         <h1 className="text-2xl font-bold">Your bag is empty</h1>
+        <p className="mt-2 text-sm text-neutral-500 dark:text-neutral-400">
+          Add a tee from the shop to continue.
+        </p>
         <Link
           to="/shop"
           className={`mt-6 inline-block px-8 py-3 ${btnPrimaryClass}`}
@@ -60,8 +64,8 @@ export default function Checkout() {
           We&apos;ll send a confirmation to <strong>{email}</strong> shortly.
         </p>
         <p className="mt-4 rounded-lg bg-amber-50 px-4 py-3 text-sm text-amber-900 dark:bg-amber-950/50 dark:text-amber-200">
-          Demo checkout — no payment was processed. Stripe can be connected in
-          Phase 2 for live payments.
+          Demo checkout — no payment was processed. Stripe can be connected later
+          for live payments.
         </p>
         <Link
           to="/shop"
@@ -74,8 +78,15 @@ export default function Checkout() {
   }
 
   return (
-    <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
-      <h1 className="text-3xl font-black uppercase tracking-tight">Checkout</h1>
+    <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8 lg:py-16">
+      <header>
+        <h1 className="text-3xl font-black uppercase tracking-tight sm:text-4xl">
+          Checkout
+        </h1>
+        <p className="mt-2 text-sm text-neutral-600 dark:text-neutral-400">
+          {site.shippingNote}
+        </p>
+      </header>
 
       <div className="mt-10 grid gap-12 lg:grid-cols-2">
         <form onSubmit={handleSubmit} className="space-y-6">
@@ -109,7 +120,7 @@ export default function Checkout() {
               <input
                 type="text"
                 required
-                placeholder="Address"
+                placeholder="Street address"
                 value={address}
                 onChange={(e) => setAddress(e.target.value)}
                 className={inputClass}
@@ -126,7 +137,7 @@ export default function Checkout() {
                 <input
                   type="text"
                   required
-                  placeholder="ZIP / Postal"
+                  placeholder="Postal code"
                   value={zip}
                   onChange={(e) => setZip(e.target.value)}
                   className={inputClass}
@@ -147,7 +158,7 @@ export default function Checkout() {
           </button>
         </form>
 
-        <div className="bg-neutral-50 p-6 dark:bg-neutral-900 lg:p-8">
+        <div className="h-fit bg-neutral-50 p-6 dark:bg-neutral-900 lg:sticky lg:top-24 lg:p-8">
           <h2 className="text-sm font-bold uppercase tracking-widest">
             Order Summary
           </h2>
@@ -155,12 +166,19 @@ export default function Checkout() {
             {items.map((item) => (
               <li
                 key={`${item.productId}-${item.size}`}
-                className="flex justify-between gap-4 text-sm"
+                className="flex gap-4 text-sm"
               >
-                <span>
-                  {item.name} × {item.quantity}
-                  <span className="block text-neutral-500">Size {item.size}</span>
-                </span>
+                <img
+                  src={item.image}
+                  alt=""
+                  className="h-16 w-14 shrink-0 bg-white object-contain p-1 dark:bg-neutral-800"
+                />
+                <div className="min-w-0 flex-1">
+                  <p className="font-medium">{item.name}</p>
+                  <p className="text-neutral-500 dark:text-neutral-400">
+                    Size {item.size} · Qty {item.quantity}
+                  </p>
+                </div>
                 <span className="shrink-0 font-medium">
                   {formatPrice(item.price * item.quantity)}
                 </span>
@@ -178,11 +196,19 @@ export default function Checkout() {
                 {shipping === 0 ? 'Free' : formatPrice(shipping)}
               </span>
             </div>
-            <div className="flex justify-between text-base font-semibold">
+            {shipping > 0 && (
+              <p className="text-xs text-neutral-500">
+                Free shipping on orders over {formatPrice(FREE_SHIPPING_THRESHOLD)}
+              </p>
+            )}
+            <div className="flex justify-between border-t border-neutral-200 pt-4 text-base font-semibold dark:border-neutral-700">
               <span>Total</span>
               <span>{formatPrice(total)}</span>
             </div>
           </div>
+          <p className="mt-6 rounded-lg bg-amber-50 px-3 py-2 text-xs text-amber-900 dark:bg-amber-950/50 dark:text-amber-200">
+            Demo mode — payment processing will be added with Stripe.
+          </p>
         </div>
       </div>
     </div>

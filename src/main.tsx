@@ -2,6 +2,7 @@ import { createRoot } from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
 import App from './App'
 import { CartProvider } from './context/CartContext'
+import { ContentProvider } from './context/ContentContext'
 import { ThemeProvider } from './context/ThemeContext'
 import { mountSplashOverlay, SPLASH_KEY } from './lib/splashIntro'
 import './index.css'
@@ -20,10 +21,12 @@ if (import.meta.env.DEV) {
 
 createRoot(document.getElementById('root')!).render(
   <BrowserRouter>
-    <ThemeProvider>
-      <CartProvider>
-        <App />
-      </CartProvider>
-    </ThemeProvider>
+    <ContentProvider>
+      <ThemeProvider>
+        <CartProvider>
+          <App />
+        </CartProvider>
+      </ThemeProvider>
+    </ContentProvider>
   </BrowserRouter>,
 )

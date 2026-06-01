@@ -1,14 +1,15 @@
 import { Link } from 'react-router-dom'
 import ProductCard from '../components/ProductCard'
 import TrustIcon from '../components/TrustIcon'
-import { products } from '../data/products'
-import { categoryTiles, site, trustSignals } from '../data/site'
+import { useProducts, useSite } from '../context/ContentContext'
+import { categoryTiles, trustSignals } from '../data/site'
 import { btnHeroPrimaryClass, btnHeroSecondaryClass, fadeInClass } from '../lib/ui'
 
-const featured = products.filter((p) => p.featured).slice(0, 4)
-
 export default function Home() {
+  const products = useProducts()
+  const site = useSite()
   const { hero, story } = site
+  const featured = products.filter((p) => p.featured).slice(0, 4)
 
   return (
     <>

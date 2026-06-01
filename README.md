@@ -1,17 +1,14 @@
-# Cole — T-Shirt Brand Storefront
+# AYRO — Premium Streetwear Storefront
 
-A modern, Nike-inspired e-commerce storefront for a clothing brand. Built with React, TypeScript, Vite, and Tailwind CSS.
+React + TypeScript + Vite + Tailwind CSS storefront for the AYRO clothing brand.
 
 ## Features
 
-- **Shop** — Product catalog with category filtering (essentials, graphics, limited)
-- **Product pages** — Size selection, quantity, image gallery
-- **Cart** — Slide-out bag with localStorage persistence
-- **Checkout** — Demo order flow with confirmation (Stripe-ready for Phase 2)
-- **Custom orders** — Design consultation / bulk order request form
-- **About & Contact** — Brand story and contact form
-- **Social links** — Footer links to Instagram, TikTok, X
-- **Light / dark mode** — Toggle in the navbar; preference saved in localStorage (respects system theme on first visit)
+- Shop with category filters, product detail, cart, and demo checkout
+- Logo intro splash on first visit
+- Custom orders and contact forms (Formspree-ready)
+- Light / dark mode
+- Optional Sanity CMS for client-managed products and site copy
 
 ## Run locally
 
@@ -22,35 +19,54 @@ npm run dev
 
 Open http://localhost:5173
 
-## Build for production
+**Tip:** Restart the dev server after adding new files to `public/`.
+
+Replay the logo intro: `http://localhost:5173/?intro=1` or run `resetAyroIntro()` in the browser console.
+
+## Environment variables
+
+Copy [`.env.example`](.env.example) to `.env.local`:
+
+| Variable | Purpose |
+|----------|---------|
+| `VITE_SANITY_PROJECT_ID` | Load products/copy from Sanity (optional) |
+| `VITE_SANITY_DATASET` | Sanity dataset (default: `production`) |
+| `VITE_FORMSPREE_CONTACT_ID` | Contact form submissions |
+| `VITE_FORMSPREE_CUSTOM_ORDER_ID` | Custom order form submissions |
+
+Without these, the site uses static data in `src/data/` and forms run in demo mode.
+
+## Sanity CMS (client handoff)
+
+1. Create a project at [sanity.io](https://www.sanity.io)
+2. Copy `sanity/.env.example` to `sanity/.env` with your project ID
+3. Install and run the studio:
 
 ```bash
-npm run build
-npm run preview
+cd sanity
+npm install
+npm run dev
 ```
 
-Static files output to `dist/` — deploy to Netlify, Vercel, GitHub Pages, etc.
+4. Add products and a **Site Settings** document in the studio
+5. Set `VITE_SANITY_PROJECT_ID` in `.env.local` and redeploy
 
-## Customize
+### Auto-rebuild on publish
 
-- **Products** — Edit [`src/data/products.json`](src/data/products.json) (prices in ZAR)
-- **Currency** — [`src/lib/currency.ts`](src/lib/currency.ts) (locale, shipping thresholds)
-- **Brand name** — Search/replace "Cole" in components and pages
-- **Social links** — Update [`src/components/Footer.tsx`](src/components/Footer.tsx) and [`src/pages/Contact.tsx`](src/pages/Contact.tsx)
-- **Images** — Replace Unsplash URLs with your own product photos
+In Sanity → API → Webhooks, add a webhook pointing to your Vercel deploy hook URL. The live site rebuilds when the client publishes content.
+
+## Deploy (Vercel)
+
+1. Import the GitHub repo at [vercel.com](https://vercel.com)
+2. Add environment variables from `.env.example`
+3. Deploy — [`vercel.json`](vercel.json) preserves static images under `/images/`
+
+## Customize (static mode)
+
+- **Products** — [`src/data/products.json`](src/data/products.json)
+- **Site copy** — [`src/data/site.ts`](src/data/site.ts)
+- **Currency** — [`src/lib/currency.ts`](src/lib/currency.ts)
 
 ## Phase 2: Stripe payments
 
-The cart already produces Stripe-ready line items via `getLineItems()` in `CartContext`. To go live:
-
-1. Create a [Stripe](https://stripe.com) account
-2. Add a small backend endpoint (e.g. Express) that creates a Checkout Session
-3. Point the checkout button to that endpoint instead of the demo confirmation
-4. Store `STRIPE_SECRET_KEY` in `.env` (never commit it)
-
-## Client brief (from intake form)
-
-- Sells t-shirts; growing a clothing brand
-- Primary actions: purchase + contact
-- Feel: trustworthy; reference: nike.com
-- Features: online store, custom orders, social + payments (payments deferred)
+Cart line items are ready via `getLineItems()` in `CartContext`. Connect a backend Checkout Session when the client is ready to take payments.

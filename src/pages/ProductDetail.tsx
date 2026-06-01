@@ -1,18 +1,29 @@
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
-import { getProductBySlug } from '../data/products'
-import { formatPrice, FREE_SHIPPING_THRESHOLD } from '../lib/currency'
+import ProductCard from '../components/ProductCard'
+import { getProductBySlugFrom, useProducts, useSite } from '../context/ContentContext'
+import { categoryLabels } from '../data/site'
+import { formatPrice } from '../lib/currency'
 import { btnPrimaryClass } from '../lib/ui'
 import { useCart } from '../context/CartContext'
 
 export default function ProductDetail() {
+  const products = useProducts()
+  const site = useSite()
   const { slug } = useParams<{ slug: string }>()
-  const product = slug ? getProductBySlug(slug) : undefined
+  const product = slug ? getProductBySlugFrom(products, slug) : undefined
   const { addItem } = useCart()
   const [selectedSize, setSelectedSize] = useState<string>('')
   const [selectedImage, setSelectedImage] = useState(0)
   const [quantity, setQuantity] = useState(1)
   const [error, setError] = useState('')
+
+  const related = useMemo(() => {
+    if (!product) return []
+    return products
+      .filter((p) => p.category === product.category && p.id !== product.id)
+      .slice(0, 3)
+  }, [product])
 
   if (!product) {
     return (
@@ -50,6 +61,13 @@ export default function ProductDetail() {
           Shop
         </Link>
         <span className="mx-2">/</span>
+        <Link
+          to={`/shop?category=${product.category}`}
+          className="hover:text-neutral-900 dark:hover:text-white"
+        >
+          {categoryLabels[product.category]}
+        </Link>
+        <span className="mx-2">/</span>
         <span className="text-neutral-900 dark:text-white">{product.name}</span>
       </nav>
 
@@ -59,7 +77,7 @@ export default function ProductDetail() {
             <img
               src={product.images[selectedImage] ?? product.image}
               alt={product.name}
-              className="h-full w-full object-cover"
+              className="h-full w-full object-contain p-4"
             />
           </div>
           {product.images.length > 1 && (
@@ -69,13 +87,13 @@ export default function ProductDetail() {
                   key={img}
                   type="button"
                   onClick={() => setSelectedImage(i)}
-                  className={`h-20 w-16 overflow-hidden border-2 ${
+                  className={`h-20 w-16 overflow-hidden border-2 bg-neutral-100 dark:bg-neutral-800 ${
                     selectedImage === i
                       ? 'border-neutral-900 dark:border-white'
                       : 'border-transparent'
                   }`}
                 >
-                  <img src={img} alt="" className="h-full w-full object-cover" />
+                  <img src={img} alt="" className="h-full w-full object-contain p-1" />
                 </button>
               ))}
             </div>
@@ -84,9 +102,9 @@ export default function ProductDetail() {
 
         <div>
           <p className="text-xs font-semibold uppercase tracking-widest text-neutral-500">
-            {product.category}
+            {categoryLabels[product.category]}
           </p>
-          <h1 className="mt-2 text-3xl font-black uppercase tracking-tight">
+          <h1 className="mt-2 text-3xl font-black uppercase tracking-tight sm:text-4xl">
             {product.name}
           </h1>
           <p className="mt-4 text-xl font-medium">{formatPrice(product.price)}</p>
@@ -117,6 +135,9 @@ export default function ProductDetail() {
                 </button>
               ))}
             </div>
+            <p className="mt-3 text-xs text-neutral-500 dark:text-neutral-400">
+              True-to-size fit. Size up for an oversized look.
+            </p>
           </div>
 
           <div className="mt-6">
@@ -128,6 +149,7 @@ export default function ProductDetail() {
                 type="button"
                 className="px-4 py-2 hover:bg-neutral-100 dark:hover:bg-neutral-800"
                 onClick={() => setQuantity((q) => Math.max(1, q - 1))}
+                aria-label="Decrease quantity"
               >
                 −
               </button>
@@ -136,6 +158,7 @@ export default function ProductDetail() {
                 type="button"
                 className="px-4 py-2 hover:bg-neutral-100 dark:hover:bg-neutral-800"
                 onClick={() => setQuantity((q) => q + 1)}
+                aria-label="Increase quantity"
               >
                 +
               </button>
@@ -156,11 +179,26 @@ export default function ProductDetail() {
             Add to Bag
           </button>
 
-          <p className="mt-4 text-xs text-neutral-500">
-            Free shipping on orders over {formatPrice(FREE_SHIPPING_THRESHOLD)}. Secure checkout at next step.
-          </p>
+          <div className="mt-6 space-y-2 border-t border-neutral-200 pt-6 text-xs text-neutral-500 dark:border-neutral-800 dark:text-neutral-400">
+            <p>{site.promo}</p>
+            <p>{site.shippingNote}</p>
+            <p>Secure checkout at next step. Demo mode — no payment processed yet.</p>
+          </div>
         </div>
       </div>
+
+      {related.length > 0 && (
+        <section className="mt-20 border-t border-neutral-200 pt-12 dark:border-neutral-800">
+          <h2 className="text-lg font-black uppercase tracking-tight">
+            You may also like
+          </h2>
+          <div className="mt-8 grid grid-cols-2 gap-6 lg:grid-cols-3 lg:gap-8">
+            {related.map((p) => (
+              <ProductCard key={p.id} product={p} variant="grid" />
+            ))}
+          </div>
+        </section>
+      )}
     </div>
   )
 }

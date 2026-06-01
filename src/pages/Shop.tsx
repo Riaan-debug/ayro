@@ -1,8 +1,8 @@
 import { useMemo } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 import ProductCard from '../components/ProductCard'
-import { products } from '../data/products'
-import { categoryLabels, site } from '../data/site'
+import { useProducts, useSite } from '../context/ContentContext'
+import { categoryLabels } from '../data/site'
 import { btnPrimaryClass } from '../lib/ui'
 import type { Product } from '../types/product'
 
@@ -23,6 +23,8 @@ function categoryHref(value: Product['category'] | 'all'): string {
 }
 
 export default function Shop() {
+  const products = useProducts()
+  const site = useSite()
   const [searchParams] = useSearchParams()
   const category = (searchParams.get('category') ?? 'all') as
     | Product['category']
