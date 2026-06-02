@@ -9,12 +9,15 @@
     "preview": "vite preview",
     "studio": "npm run dev --prefix sanity",
     "seed:sanity": "node sanity/scripts/seed.mjs",
-    "fix:sanity-keys": "node sanity/scripts/fix-keys.mjs"
+    "fix:sanity-keys": "node sanity/scripts/fix-keys.mjs",
+    "dev:api": "vercel dev"
   },
   "devDependencies": {
     "@tailwindcss/vite": "^4.3.0",
+    "@types/node": "^25.9.1",
     "@types/react": "^19.2.15",
     "@types/react-dom": "^19.2.3",
+    "@vercel/node": "^5.3.0",
     "@vitejs/plugin-react": "^6.0.2",
     "tailwindcss": "^4.3.0",
     "typescript": "~6.0.2",

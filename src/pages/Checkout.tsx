@@ -7,20 +7,20 @@ import { btnPrimaryClass, inputClass } from '../lib/ui'
 
 export default function Checkout() {
   const site = useSite()
-  const { items, subtotal, clearCart, getLineItems, closeCart } = useCart()
+  const { items, subtotal, getLineItems } = useCart()
   const navigate = useNavigate()
-  const [step, setStep] = useState<'form' | 'confirmed'>('form')
   const [email, setEmail] = useState('')
   const [name, setName] = useState('')
   const [address, setAddress] = useState('')
   const [city, setCity] = useState('')
   const [zip, setZip] = useState('')
-  const [orderId, setOrderId] = useState('')
+  const [paying, setPaying] = useState(false)
+  const [error, setError] = useState('')
 
   const shipping = subtotal >= FREE_SHIPPING_THRESHOLD ? 0 : SHIPPING_COST
   const total = subtotal + shipping
 
-  if (items.length === 0 && step === 'form') {
+  if (items.length === 0) {
     return (
       <div className="mx-auto max-w-lg px-4 py-24 text-center">
         <h1 className="text-2xl font-bold">Your bag is empty</h1>
@@ -37,45 +37,40 @@ export default function Checkout() {
     )
   }
 
-  function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
     if (!email || !name || !address || !city || !zip) return
 
-    const id = `AYRO-${Date.now().toString(36).toUpperCase()}`
-    setOrderId(id)
+    setPaying(true)
+    setError('')
 
-    void getLineItems()
+    try {
+      const res = await fetch('/api/paystack/initialize', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email,
+          name,
+          address,
+          city,
+          zip,
+          lineItems: getLineItems(),
+        }),
+      })
 
-    clearCart()
-    closeCart()
-    setStep('confirmed')
-  }
+      const data = (await res.json()) as { url?: string; error?: string }
 
-  if (step === 'confirmed') {
-    return (
-      <div className="mx-auto max-w-lg px-4 py-16 text-center sm:py-24">
-        <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-neutral-900 text-2xl text-white dark:bg-white dark:text-neutral-900">
-          ✓
-        </div>
-        <h1 className="mt-8 text-2xl font-black uppercase tracking-tight">
-          Order Confirmed
-        </h1>
-        <p className="mt-4 text-neutral-600 dark:text-neutral-400">
-          Thank you! Your order <strong>{orderId}</strong> has been received.
-          We&apos;ll send a confirmation to <strong>{email}</strong> shortly.
-        </p>
-        <p className="mt-4 rounded-lg bg-amber-50 px-4 py-3 text-sm text-amber-900 dark:bg-amber-950/50 dark:text-amber-200">
-          Demo checkout — no payment was processed. Stripe can be connected later
-          for live payments.
-        </p>
-        <Link
-          to="/shop"
-          className={`mt-8 inline-block px-8 ${btnPrimaryClass}`}
-        >
-          Continue Shopping
-        </Link>
-      </div>
-    )
+      if (!res.ok || !data.url) {
+        setError(data.error ?? 'Could not start payment. Try again.')
+        return
+      }
+
+      window.location.href = data.url
+    } catch {
+      setError('Network error. If testing locally, run vercel dev.')
+    } finally {
+      setPaying(false)
+    }
   }
 
   return (
@@ -147,8 +142,18 @@ export default function Checkout() {
             </div>
           </fieldset>
 
-          <button type="submit" className={`w-full ${btnPrimaryClass}`}>
-            Place Order (Demo)
+          {error && (
+            <p className="rounded-lg bg-red-50 px-3 py-2 text-sm text-red-800 dark:bg-red-950/40 dark:text-red-200">
+              {error}
+            </p>
+          )}
+
+          <button
+            type="submit"
+            disabled={paying}
+            className={`w-full disabled:opacity-60 ${btnPrimaryClass}`}
+          >
+            {paying ? 'Redirecting to Paystack…' : `Pay ${formatPrice(total)}`}
           </button>
           <button
             type="button"
@@ -207,8 +212,8 @@ export default function Checkout() {
               <span>{formatPrice(total)}</span>
             </div>
           </div>
-          <p className="mt-6 rounded-lg bg-amber-50 px-3 py-2 text-xs text-amber-900 dark:bg-amber-950/50 dark:text-amber-200">
-            Demo mode — payment processing will be added with Stripe.
+          <p className="mt-6 text-xs text-neutral-500 dark:text-neutral-400">
+            Secure payment via Paystack — cards and EFT accepted.
           </p>
         </div>
       </div>

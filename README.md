@@ -73,6 +73,10 @@ See [`docs/CLIENT.md`](docs/CLIENT.md) for how the client adds products and edit
 - **Site copy** — [`src/data/site.ts`](src/data/site.ts)
 - **Currency** — [`src/lib/currency.ts`](src/lib/currency.ts)
 
-## Phase 2: Stripe payments
+## Phase 2: Paystack payments
 
-Cart line items are ready via `getLineItems()` in `CartContext`. Connect a backend Checkout Session when the client is ready to take payments.
+Checkout uses Paystack (ZAR). Cart line items are sent to `/api/paystack/initialize`; success is verified at `/checkout/success`.
+
+Local dev with payments: `npm run dev:api` (runs Vercel dev so API routes work).
+
+Test card: use Paystack test mode — see [`docs/DEPLOY.md`](docs/DEPLOY.md).
