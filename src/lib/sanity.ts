@@ -1,4 +1,3 @@
-import { createClient, type SanityClient } from '@sanity/client'
 import type { Product } from '../types/product'
 import { products as staticProducts } from '../data/products'
 import { site as staticSite, type SiteContent, type CategoryTile } from '../data/site'
@@ -33,9 +32,21 @@ export function isSanityConfigured(): boolean {
   return Boolean(projectId)
 }
 
-function getClient(): SanityClient | null {
-  if (!projectId) return null
-  return createClient({ projectId, dataset, apiVersion, useCdn: true })
+async function sanityQuery<T>(query: string): Promise<T> {
+  if (!projectId) throw new Error('Sanity project ID is not configured')
+
+  const url = new URL(
+    `https://${projectId}.api.sanity.io/v${apiVersion}/data/query/${dataset}`,
+  )
+  url.searchParams.set('query', query)
+
+  const response = await fetch(url)
+  if (!response.ok) {
+    throw new Error(`Sanity query failed (${response.status})`)
+  }
+
+  const json = (await response.json()) as { result: T }
+  return json.result
 }
 
 const PRODUCTS_QUERY = `*[_type == "product"] | order(_createdAt asc) {
@@ -144,14 +155,13 @@ export async function fetchSanityContent(): Promise<{
   products: Product[]
   site: SiteContent
 }> {
-  const client = getClient()
-  if (!client) {
+  if (!projectId) {
     return { products: staticProducts, site: staticSite }
   }
 
   const [productsRaw, siteRaw] = await Promise.all([
-    client.fetch<Record<string, unknown>[]>(PRODUCTS_QUERY),
-    client.fetch<Record<string, unknown> | null>(SITE_QUERY),
+    sanityQuery<Record<string, unknown>[]>(PRODUCTS_QUERY),
+    sanityQuery<Record<string, unknown> | null>(SITE_QUERY),
   ])
 
   return {
