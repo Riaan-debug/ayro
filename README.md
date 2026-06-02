@@ -53,7 +53,13 @@ npm run dev
 
 ### Auto-rebuild on publish
 
+See [`DEPLOY.md`](DEPLOY.md) for Vercel env vars, CORS, webhooks, and seed script.
+
 In Sanity → API → Webhooks, add a webhook pointing to your Vercel deploy hook URL. The live site rebuilds when the client publishes content.
+
+### Client guide
+
+See [`CLIENT.md`](CLIENT.md) for how the client adds products and edits site copy.
 
 ## Deploy (Vercel)
 

@@ -7,6 +7,12 @@ export type SocialLink = {
   url: string
 }
 
+export type CategoryTile = {
+  label: string
+  slug: Product['category']
+  image: string
+}
+
 export type SiteContent = {
   brandName: string
   logo: string
@@ -33,6 +39,7 @@ export type SiteContent = {
     title: string
     subtitle: string
   }
+  categoryTiles: CategoryTile[]
 }
 
 export const site: SiteContent = {
@@ -74,6 +81,11 @@ export const site: SiteContent = {
     subtitle:
       'AYRO essentials, graphics, and limited drops — priced in ZAR.',
   },
+  categoryTiles: [
+    { label: 'Essentials', slug: 'essentials', image: '/images/ayro/category-essentials.jpeg' },
+    { label: 'Graphics', slug: 'graphics', image: '/images/ayro/category-graphics.jpeg' },
+    { label: 'Limited', slug: 'limited', image: '/images/ayro/category-limited.jpeg' },
+  ],
 }
 
 export const categoryLabels: Record<Product['category'] | 'all', string> = {
@@ -90,11 +102,7 @@ export function getPrimarySocial(): SocialLink {
   )
 }
 
-export const categoryTiles = [
-  { label: 'Essentials', slug: 'essentials', image: '/images/ayro/category-essentials.jpeg' },
-  { label: 'Graphics', slug: 'graphics', image: '/images/ayro/category-graphics.jpeg' },
-  { label: 'Limited', slug: 'limited', image: '/images/ayro/category-limited.jpeg' },
-] as const
+export const categoryTiles = site.categoryTiles
 
 export const trustSignals = [
   { title: 'Premium Materials', desc: 'Heavyweight cotton built to last wash after wash.', icon: 'fabric' as const },

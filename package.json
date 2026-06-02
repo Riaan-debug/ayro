@@ -7,7 +7,9 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview",
-    "studio": "npm run dev --prefix sanity"
+    "studio": "npm run dev --prefix sanity",
+    "seed:sanity": "node sanity/scripts/seed.mjs",
+    "fix:sanity-keys": "node sanity/scripts/fix-keys.mjs"
   },
   "devDependencies": {
     "@tailwindcss/vite": "^4.3.0",

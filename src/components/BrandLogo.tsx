@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { site } from '../data/site'
+import { useSite } from '../context/ContentContext'
 
 type Props = {
   className?: string
@@ -13,6 +13,7 @@ export function BrandLogo({
   imageClassName = 'h-9 w-9 shrink-0 object-contain',
   showText = true,
 }: Props) {
+  const site = useSite()
   const [logoError, setLogoError] = useState(false)
 
   return (
@@ -43,6 +44,8 @@ export function BrandLogoLink({
   imageClassName?: string
   showText?: boolean
 }) {
+  const site = useSite()
+
   return (
     <Link
       to="/"

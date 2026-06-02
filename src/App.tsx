@@ -1,6 +1,7 @@
 import { Routes, Route } from 'react-router-dom'
 import Layout from './components/Layout'
 import SplashIntro from './components/SplashIntro'
+import ContentGate from './components/ContentGate'
 import Home from './pages/Home'
 import Shop from './pages/Shop'
 import ProductDetail from './pages/ProductDetail'
@@ -13,6 +14,7 @@ export default function App() {
   return (
     <>
       <SplashIntro />
+      <ContentGate>
       <Routes>
       <Route element={<Layout />}>
         <Route index element={<Home />} />
@@ -24,6 +26,7 @@ export default function App() {
         <Route path="contact" element={<Contact />} />
       </Route>
       </Routes>
+      </ContentGate>
     </>
   )
 }

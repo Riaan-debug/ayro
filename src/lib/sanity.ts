@@ -1,7 +1,29 @@
 import { createClient, type SanityClient } from '@sanity/client'
 import type { Product } from '../types/product'
 import { products as staticProducts } from '../data/products'
-import { site as staticSite, type SiteContent } from '../data/site'
+import { site as staticSite, type SiteContent, type CategoryTile } from '../data/site'
+
+const staticTiles = staticSite.categoryTiles
+
+function mapCategoryTiles(raw: Record<string, unknown>): CategoryTile[] {
+  return [
+    {
+      label: 'Essentials',
+      slug: 'essentials',
+      image: String(raw.categoryEssentials ?? staticTiles[0].image),
+    },
+    {
+      label: 'Graphics',
+      slug: 'graphics',
+      image: String(raw.categoryGraphics ?? staticTiles[1].image),
+    },
+    {
+      label: 'Limited',
+      slug: 'limited',
+      image: String(raw.categoryLimited ?? staticTiles[2].image),
+    },
+  ]
+}
 
 const projectId = import.meta.env.VITE_SANITY_PROJECT_ID as string | undefined
 const dataset = (import.meta.env.VITE_SANITY_DATASET as string | undefined) ?? 'production'
@@ -89,6 +111,7 @@ function mapSite(raw: Record<string, unknown> | null): SiteContent {
       title: String(raw.shopTitle ?? staticSite.shop.title),
       subtitle: String(raw.shopSubtitle ?? staticSite.shop.subtitle),
     },
+    categoryTiles: mapCategoryTiles(raw),
   }
 }
 
@@ -108,7 +131,11 @@ function mapProducts(raw: Record<string, unknown>[]): Product[] {
       : p.image
         ? [String(p.image)]
         : [],
-    sizes: Array.isArray(p.sizes) ? (p.sizes as string[]) : [],
+    sizes: Array.isArray(p.sizes)
+      ? p.sizes.map((s) =>
+          typeof s === 'string' ? s : String((s as { value?: string }).value ?? s),
+        )
+      : [],
     featured: Boolean(p.featured),
   }))
 }

@@ -15,6 +15,7 @@ dist-ssr
 .env.local
 .env.*.local
 sanity/.env
+sanity/.sanity
 
 # Editor directories and files
 .vscode/*

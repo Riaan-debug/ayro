@@ -1,10 +1,12 @@
 import { Link } from 'react-router-dom'
 import { BrandLogoLink } from './BrandLogo'
-import { site } from '../data/site'
+import { useSite } from '../context/ContentContext'
 
 const linkHover = 'hover:text-neutral-900 dark:hover:text-white'
 
 export default function Footer() {
+  const site = useSite()
+
   return (
     <footer className="border-t border-neutral-200 bg-neutral-50 dark:border-neutral-800 dark:bg-neutral-900">
       <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">

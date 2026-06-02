@@ -1,11 +1,12 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useCart } from '../context/CartContext'
-import { site } from '../data/site'
+import { useSite } from '../context/ContentContext'
 import { formatPrice, FREE_SHIPPING_THRESHOLD, SHIPPING_COST } from '../lib/currency'
 import { btnPrimaryClass, inputClass } from '../lib/ui'
 
 export default function Checkout() {
+  const site = useSite()
   const { items, subtotal, clearCart, getLineItems, closeCart } = useCart()
   const navigate = useNavigate()
   const [step, setStep] = useState<'form' | 'confirmed'>('form')

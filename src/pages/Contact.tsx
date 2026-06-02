@@ -1,11 +1,12 @@
 import { useState } from 'react'
-import { site } from '../data/site'
+import { useSite } from '../context/ContentContext'
 import { forms, submitToFormspree } from '../lib/forms'
 import { btnPrimaryClass, inputClass } from '../lib/ui'
 
 type Status = 'idle' | 'submitting' | 'submitted' | 'error'
 
 export default function Contact() {
+  const site = useSite()
   const [status, setStatus] = useState<Status>('idle')
   const [error, setError] = useState('')
   const [form, setForm] = useState({ name: '', email: '', message: '' })
