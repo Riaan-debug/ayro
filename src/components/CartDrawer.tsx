@@ -2,16 +2,10 @@ import { Link } from 'react-router-dom'
 import { useCart } from '../context/CartContext'
 import { formatPrice } from '../lib/currency'
 import { btnPrimaryClass } from '../lib/ui'
+import CartLineItem from './CartLineItem'
 
 export default function CartDrawer() {
-  const {
-    items,
-    subtotal,
-    isOpen,
-    closeCart,
-    removeItem,
-    updateQuantity,
-  } = useCart()
+  const { items, subtotal, isOpen, closeCart } = useCart()
 
   if (!isOpen) return null
 
@@ -47,73 +41,11 @@ export default function CartDrawer() {
           ) : (
             <ul className="space-y-6">
               {items.map((item) => (
-                <li
+                <CartLineItem
                   key={`${item.productId}-${item.size}`}
-                  className="flex gap-4"
-                >
-                  <img
-                    src={item.image}
-                    alt={item.name}
-                    className="h-24 w-20 shrink-0 bg-neutral-100 object-cover dark:bg-neutral-800"
-                  />
-                  <div className="flex flex-1 flex-col">
-                    <div className="flex justify-between gap-2">
-                      <div>
-                        <p className="text-sm font-semibold">{item.name}</p>
-                        <p className="text-xs text-neutral-500">
-                          Size {item.size}
-                        </p>
-                      </div>
-                      <p className="shrink-0 text-sm font-medium">
-                        {formatPrice(item.price * item.quantity)}
-                      </p>
-                    </div>
-                    <div className="mt-3 flex items-center gap-3">
-                      <div className="flex items-center border border-neutral-300 dark:border-neutral-600">
-                        <button
-                          type="button"
-                          className="px-3 py-1 text-sm hover:bg-neutral-100 dark:hover:bg-neutral-800"
-                          onClick={() =>
-                            updateQuantity(
-                              item.productId,
-                              item.size,
-                              item.quantity - 1,
-                            )
-                          }
-                          aria-label="Decrease quantity"
-                        >
-                          −
-                        </button>
-                        <span className="min-w-[2rem] text-center text-sm">
-                          {item.quantity}
-                        </span>
-                        <button
-                          type="button"
-                          className="px-3 py-1 text-sm hover:bg-neutral-100 dark:hover:bg-neutral-800"
-                          onClick={() =>
-                            updateQuantity(
-                              item.productId,
-                              item.size,
-                              item.quantity + 1,
-                            )
-                          }
-                          aria-label="Increase quantity"
-                        >
-                          +
-                        </button>
-                      </div>
-                      <button
-                        type="button"
-                        className="text-xs text-neutral-500 underline hover:text-neutral-900 dark:hover:text-white"
-                        onClick={() =>
-                          removeItem(item.productId, item.size)
-                        }
-                      >
-                        Remove
-                      </button>
-                    </div>
-                  </div>
-                </li>
+                  item={item}
+                  variant="drawer"
+                />
               ))}
             </ul>
           )}

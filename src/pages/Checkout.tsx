@@ -4,6 +4,7 @@ import { useCart } from '../context/CartContext'
 import { useSite } from '../context/ContentContext'
 import { formatPrice, FREE_SHIPPING_THRESHOLD, SHIPPING_COST } from '../lib/currency'
 import { btnPrimaryClass, inputClass } from '../lib/ui'
+import CartLineItem from '../components/CartLineItem'
 
 export default function Checkout() {
   const site = useSite()
@@ -196,30 +197,24 @@ export default function Checkout() {
         </form>
 
         <div className="h-fit bg-neutral-50 p-6 dark:bg-neutral-900 lg:sticky lg:top-24 lg:p-8">
-          <h2 className="text-sm font-bold uppercase tracking-widest">
-            Order Summary
-          </h2>
-          <ul className="mt-6 space-y-4">
+          <div className="flex items-baseline justify-between gap-4">
+            <h2 className="text-sm font-bold uppercase tracking-widest">
+              Order Summary
+            </h2>
+            <Link
+              to="/shop"
+              className="text-xs text-neutral-500 underline hover:text-neutral-900 dark:hover:text-neutral-400 dark:hover:text-white"
+            >
+              Add items
+            </Link>
+          </div>
+          <ul className="mt-6 space-y-6">
             {items.map((item) => (
-              <li
+              <CartLineItem
                 key={`${item.productId}-${item.size}`}
-                className="flex gap-4 text-sm"
-              >
-                <img
-                  src={item.image}
-                  alt=""
-                  className="h-16 w-14 shrink-0 bg-white object-contain p-1 dark:bg-neutral-800"
-                />
-                <div className="min-w-0 flex-1">
-                  <p className="font-medium">{item.name}</p>
-                  <p className="text-neutral-500 dark:text-neutral-400">
-                    Size {item.size} · Qty {item.quantity}
-                  </p>
-                </div>
-                <span className="shrink-0 font-medium">
-                  {formatPrice(item.price * item.quantity)}
-                </span>
-              </li>
+                item={item}
+                variant="checkout"
+              />
             ))}
           </ul>
           <div className="mt-6 space-y-2 border-t border-neutral-200 pt-6 text-sm dark:border-neutral-700">

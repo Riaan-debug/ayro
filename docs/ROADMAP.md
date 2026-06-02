@@ -42,6 +42,7 @@ Single source of truth for project phases. Live site: [cole-roan.vercel.app](htt
 - `GET /api/paystack/verify` — confirms payment on success page
 - ZAR totals with shipping (R99, free over R1 000)
 - Checkout + success pages wired end-to-end
+- Editable bag on checkout (quantity and remove without leaving the page)
 - Verified on **localhost:3056** (`npm run dev:api`) and **production** (test mode)
 
 ```mermaid

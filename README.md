@@ -6,7 +6,7 @@ React + TypeScript + Vite + Tailwind CSS storefront for the AYRO clothing brand.
 
 ## Features
 
-- Shop with category filters, product detail, cart, and Paystack checkout (ZAR)
+- Shop with category filters, product detail, cart (editable at checkout), and Paystack checkout (ZAR)
 - Logo intro splash on first visit
 - Custom orders and contact forms (Formspree)
 - Light / dark mode
