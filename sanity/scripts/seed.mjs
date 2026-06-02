@@ -57,6 +57,17 @@ function randomKey(prefix = 'k') {
   return `${prefix}-${crypto.randomUUID().replace(/-/g, '').slice(0, 10)}`
 }
 
+function legalSection(key, title, paragraphs = [], listItems) {
+  const section = {
+    _key: key,
+    _type: 'legalSection',
+    title,
+    paragraphs,
+  }
+  if (listItems) section.listItems = listItems
+  return section
+}
+
 function keyedImage(image, key) {
   return {
     _key: key,
@@ -128,7 +139,73 @@ async function seedSiteSettings() {
     categoryEssentials: catEssentials,
     categoryGraphics: catGraphics,
     categoryLimited: catLimited,
+    privacyIntro:
+      '{{brandName}} ("we", "us") respects your privacy. This policy explains what personal information we collect when you use our website and how we use it. By shopping with us or submitting a form, you agree to this policy.',
+    privacySections: [
+      legalSection('privacy-collect', 'Information we collect', [
+        'When you place an order, we collect your name, email address, and shipping details so we can fulfil and deliver your purchase.',
+        'When you contact us or request a custom order, we collect the details you submit through our forms (name, email, and message content).',
+        'We may collect basic technical data such as browser type and pages visited to keep the site secure and working correctly.',
+      ]),
+      legalSection('privacy-use', 'How we use your information', [
+        'We use your information to process orders, respond to enquiries, send order-related communication, and improve our store. We do not sell your personal information to third parties.',
+      ]),
+      legalSection('privacy-payment', 'Payment processing', [
+        'Card and EFT payments are processed by [Paystack](https://paystack.com). We do not store your full card details on our servers. Paystack handles payment data according to their own privacy and security standards.',
+      ]),
+      legalSection('privacy-forms', 'Form submissions', [
+        'Contact and custom-order forms may be delivered to us via Formspree or a similar service so we can read and reply to your message.',
+      ]),
+      legalSection('privacy-rights', 'Your rights', [
+        'Under applicable South African law, including the Protection of Personal Information Act (POPIA), you may request access to, correction of, or deletion of personal information we hold about you. Contact us using the details below.',
+      ]),
+      legalSection('privacy-contact', 'Contact', [
+        'For privacy questions or requests, email {{contactEmail}} or visit our {{contactPage}}.',
+      ]),
+    ],
+    privacyLastUpdated: 'June 2026',
+    returnsIntro:
+      'We want you to love your {{brandName}} gear. If something is not right, here is how returns and refunds work for orders placed on our online store.',
+    returnsSections: [
+      legalSection('returns-window', '30-day returns', [
+        'Unworn items in original condition may be returned within 30 days of delivery for a refund or exchange, subject to the conditions below.',
+      ]),
+      legalSection(
+        'returns-eligible',
+        'Eligible items',
+        [],
+        [
+          'Items must be unworn, unwashed, and free of odours or damage.',
+          'Original tags and packaging should be included where possible.',
+          'Custom-made or personalised orders may not be eligible unless faulty.',
+          'Sale or final-clearance items are returnable only if faulty.',
+        ],
+      ),
+      legalSection('returns-start', 'How to start a return', [
+        'Email {{contactEmail}} with your order reference (from your Paystack confirmation or our reply email), the item(s) you wish to return, and the reason. We will confirm next steps and, if approved, provide return instructions for shipping within South Africa.',
+        'You can also reach us via the {{contactPage}}.',
+      ]),
+      legalSection('returns-refunds', 'Refunds', [
+        'Approved refunds are processed to the original payment method used at checkout. Paystack and your bank may take several business days to show the credit on your account after we initiate the refund.',
+        'Original shipping fees are non-refundable unless the return is due to our error or a faulty product.',
+      ]),
+      legalSection('returns-exchanges', 'Exchanges', [
+        'To exchange for a different size or style, contact us with your order details. If the replacement item is available, we will guide you through the swap once we receive the returned item.',
+      ]),
+      legalSection('returns-faulty', 'Faulty or incorrect items', [
+        'If you receive the wrong item or a product with a manufacturing defect, contact us within 7 days of delivery with photos. We will arrange a replacement or full refund, including reasonable return shipping where applicable.',
+      ]),
+      legalSection('returns-questions', 'Questions', [
+        'See also our {{privacyPage}}. For anything else, email {{contactEmail}}.',
+      ]),
+    ],
+    returnsLastUpdated: 'June 2026',
   })
+  try {
+    await client.delete('drafts.siteSettings')
+  } catch {
+    // no draft to remove
+  }
   console.log('Site settings created.')
 }
 

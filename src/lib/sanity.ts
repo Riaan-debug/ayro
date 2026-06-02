@@ -1,6 +1,6 @@
 import type { Product } from '../types/product'
 import { products as staticProducts } from '../data/products'
-import { site as staticSite, type SiteContent, type CategoryTile } from '../data/site'
+import { site as staticSite, type SiteContent, type CategoryTile, type LegalPageContent, type LegalSectionContent, privacyPolicy as staticPrivacyPolicy, returnsPolicy as staticReturnsPolicy } from '../data/site'
 
 const staticTiles = staticSite.categoryTiles
 
@@ -83,8 +83,62 @@ const SITE_QUERY = `*[_type == "siteSettings"][0] {
   socials,
   "categoryEssentials": categoryEssentials.asset->url,
   "categoryGraphics": categoryGraphics.asset->url,
-  "categoryLimited": categoryLimited.asset->url
+  "categoryLimited": categoryLimited.asset->url,
+  privacyIntro,
+  privacySections,
+  privacyLastUpdated,
+  returnsIntro,
+  returnsSections,
+  returnsLastUpdated
 }`
+
+function mapLegalSections(
+  raw: unknown,
+  fallback: LegalSectionContent[],
+): LegalSectionContent[] {
+  if (!Array.isArray(raw) || raw.length === 0) return fallback
+
+  return raw.map((section, index) => {
+    const item = section as Record<string, unknown>
+    const fallbackSection = fallback[index] ?? fallback[fallback.length - 1]
+
+    return {
+      title: String(item.title ?? fallbackSection?.title ?? ''),
+      paragraphs: Array.isArray(item.paragraphs)
+        ? item.paragraphs.map((paragraph) => String(paragraph))
+        : (fallbackSection?.paragraphs ?? []),
+      listItems: Array.isArray(item.listItems)
+        ? item.listItems.map((listItem) => String(listItem))
+        : fallbackSection?.listItems,
+    }
+  })
+}
+
+function mapLegalPage(
+  raw: Record<string, unknown>,
+  prefix: 'privacy' | 'returns',
+  fallback: LegalPageContent,
+): LegalPageContent {
+  const introKey = prefix === 'privacy' ? 'privacyIntro' : 'returnsIntro'
+  const sectionsKey = prefix === 'privacy' ? 'privacySections' : 'returnsSections'
+  const updatedKey = prefix === 'privacy' ? 'privacyLastUpdated' : 'returnsLastUpdated'
+
+  const intro = raw[introKey]
+  const sections = raw[sectionsKey]
+  const lastUpdated = raw[updatedKey]
+
+  const hasIntro = typeof intro === 'string' && intro.trim().length > 0
+  const hasSections = Array.isArray(sections) && sections.length > 0
+  const hasLastUpdated = typeof lastUpdated === 'string' && lastUpdated.trim().length > 0
+
+  if (!hasIntro && !hasSections && !hasLastUpdated) return fallback
+
+  return {
+    intro: hasIntro ? String(intro) : fallback.intro,
+    sections: hasSections ? mapLegalSections(sections, fallback.sections) : fallback.sections,
+    lastUpdated: hasLastUpdated ? String(lastUpdated) : fallback.lastUpdated,
+  }
+}
 
 function mapSite(raw: Record<string, unknown> | null): SiteContent {
   if (!raw) return staticSite
@@ -123,6 +177,8 @@ function mapSite(raw: Record<string, unknown> | null): SiteContent {
       subtitle: String(raw.shopSubtitle ?? staticSite.shop.subtitle),
     },
     categoryTiles: mapCategoryTiles(raw),
+    privacyPolicy: mapLegalPage(raw, 'privacy', staticPrivacyPolicy),
+    returnsPolicy: mapLegalPage(raw, 'returns', staticReturnsPolicy),
   }
 }
 

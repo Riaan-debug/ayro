@@ -3,8 +3,8 @@ import { structureTool } from 'sanity/structure'
 import { visionTool } from '@sanity/vision'
 import { schemaTypes } from './schemas'
 
-const projectId = process.env.SANITY_STUDIO_PROJECT_ID ?? 'xilnix6x'
-const dataset = process.env.SANITY_STUDIO_DATASET ?? 'production'
+const projectId = 'xilnix6x'
+const dataset = 'production'
 
 export default defineConfig({
   name: 'ayro',

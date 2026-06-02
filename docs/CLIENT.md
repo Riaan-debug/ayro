@@ -15,13 +15,18 @@ Open http://localhost:3333 and sign in with your Sanity account.
 
 **Option B — Hosted studio (recommended for client)**
 
-From the `sanity` folder, run once:
+From the `sanity` folder, run once (use `npx` — `sanity` is not installed globally):
 
 ```bash
+npx sanity login
 npm run deploy
 ```
 
-Sanity hosts the studio at a URL like `https://ayro.sanity.studio`. Bookmark it and share login with your team.
+When prompted for hostname, choose **`ayro`** (the existing one — do not create a new hostname).
+
+Sanity hosts the studio at **https://ayro.sanity.studio**. Bookmark it and share login with your team.
+
+After deploy, hard-refresh the studio (Ctrl+Shift+R) so new fields appear.
 
 ---
 
@@ -58,8 +63,41 @@ You can change:
 - Shop page title and subtitle
 - Social links (Instagram, TikTok, etc.)
 - Category tile images on the homepage
+- **Privacy Policy** and **Returns & Refunds** (see below)
 
 Click **Publish** when done.
+
+---
+
+## Edit Privacy Policy or Returns & Refunds
+
+**Important:** If you use the hosted studio (`npm run deploy` URL), your developer must run `npm run deploy` from the `sanity/` folder after schema updates — otherwise new fields will not appear. For local studio, restart with `npm run dev` in `sanity/`.
+
+In the studio sidebar, open **Site Settings**, then click the **Legal pages** tab at the top of the form.
+
+You will see:
+
+- **Privacy Policy — intro / sections / last updated**
+- **Returns & Refunds — intro / sections / last updated**
+
+Each section has a title, one or more paragraphs, and optional bullet points.
+
+**Special placeholders** (leave these as-is unless your developer explains otherwise):
+
+| Placeholder | Becomes |
+|-------------|---------|
+| `{{brandName}}` | Your brand name from Site Settings |
+| `{{contactEmail}}` | Your contact email (clickable mailto link) |
+| `{{contactPage}}` | Link to the Contact page |
+| `{{privacyPage}}` | Link to the Privacy Policy |
+
+**External links:** use `[Paystack](https://paystack.com)` format in a paragraph.
+
+Update **Last updated** when you change policy wording (e.g. `June 2026`).
+
+The live site updates after the next deploy (automatic if webhooks are configured).
+
+**Note:** If you change your return window (e.g. 30 days), ask your developer to update the homepage trust badge text so it stays consistent.
 
 ---
 

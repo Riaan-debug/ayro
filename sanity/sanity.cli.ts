@@ -5,4 +5,5 @@ export default defineCliConfig({
     projectId: 'xilnix6x',
     dataset: 'production',
   },
+  studioHost: 'ayro',
 })
