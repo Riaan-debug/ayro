@@ -31,6 +31,8 @@ export default function Footer() {
             <ul className="mt-4 space-y-2 text-sm text-neutral-600 dark:text-neutral-400">
               <li><Link to="/custom-orders" className={linkHover}>Custom Orders</Link></li>
               <li><Link to="/contact" className={linkHover}>Contact Us</Link></li>
+              <li><Link to="/returns" className={linkHover}>Returns & Refunds</Link></li>
+              <li><Link to="/privacy" className={linkHover}>Privacy Policy</Link></li>
               <li><Link to="/about" className={linkHover}>Our Story</Link></li>
             </ul>
           </div>

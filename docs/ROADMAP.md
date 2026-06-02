@@ -5,7 +5,7 @@ Single source of truth for project phases. Live site: [cole-roan.vercel.app](htt
 | Phase | Focus | Status |
 |-------|--------|--------|
 | **Phase 1** | Storefront + CMS + forms | ~complete |
-| **Phase 2** | Paystack checkout (ZAR) | Engineering done; live keys + legal pages remain |
+| **Phase 2** | Paystack checkout (ZAR) | Legal pages done; live keys + Paystack compliance remain |
 | **Phase 3** | Customer accounts | Not started |
 
 ---
@@ -55,7 +55,7 @@ flowchart LR
 
 ### Remaining before fully live
 
-- [ ] Privacy Policy and Returns pages (`/privacy`, `/returns`)
+- [x] Privacy Policy and Returns pages (`/privacy`, `/returns`)
 - [ ] Client completes Paystack compliance (Owner + Account sections)
 - [ ] Swap Vercel `PAYSTACK_SECRET_KEY` from `sk_test_...` to `sk_live_...`
 - [ ] One live payment smoke test

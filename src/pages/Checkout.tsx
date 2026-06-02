@@ -167,6 +167,18 @@ export default function Checkout() {
             </p>
           )}
 
+          <p className="text-xs text-neutral-500 dark:text-neutral-400">
+            By continuing to payment, you agree to our{' '}
+            <Link to="/privacy" className="underline hover:no-underline">
+              Privacy Policy
+            </Link>{' '}
+            and{' '}
+            <Link to="/returns" className="underline hover:no-underline">
+              Returns & Refunds
+            </Link>{' '}
+            policy.
+          </p>
+
           <button
             type="submit"
             disabled={paying}
