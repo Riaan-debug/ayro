@@ -1,0 +1,6 @@
+node_modules
+sanity/node_modules
+dist
+cole *.jpeg
+src/assets
+.git

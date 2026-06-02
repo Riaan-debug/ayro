@@ -27,3 +27,5 @@ sanity/.sanity
 *.njsproj
 *.sln
 *.sw?
+
+.vercel

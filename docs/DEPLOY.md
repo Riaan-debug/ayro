@@ -58,4 +58,4 @@ When the client publishes in the studio, the live site rebuilds automatically.
 
 ## 6. Client handoff
 
-Share [`CLIENT.md`](CLIENT.md) and invite the client as **Editor** in Sanity → Project → Members.
+Share [`CLIENT.md`](CLIENT.md) (in this folder) and invite the client as **Editor** in Sanity → Project → Members.
