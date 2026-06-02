@@ -1,5 +1,15 @@
 # AYRO — Production deploy checklist
 
+**Project phases:** See [`ROADMAP.md`](ROADMAP.md) for Phase 1 (storefront), Phase 2 (Paystack), and Phase 3 (accounts — planned).
+
+| Phase | Status |
+|-------|--------|
+| Phase 1 — Storefront + CMS | ~complete |
+| Phase 2 — Paystack checkout | Working in test mode; live keys + legal pages remain |
+| Phase 3 — Customer accounts | Not started |
+
+---
+
 ## 1. Vercel environment variables
 
 In your Vercel project → **Settings → Environment Variables**, add:
@@ -29,7 +39,8 @@ Redeploy after saving.
 
 Add:
 
-- `http://localhost:5173` (allow credentials: off)
+- `http://localhost:5173` (frontend-only dev — allow credentials: off)
+- `http://localhost:3056` (`npm run dev:api` — checkout + API routes)
 - `https://cole-roan.vercel.app` (production — update if custom domain added)
 
 ## 3. Seed CMS content (one time)

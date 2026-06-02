@@ -65,9 +65,16 @@ Click **Publish** when done.
 
 ## What you cannot edit in Sanity (yet)
 
-- Checkout and payments (demo mode until Stripe is connected)
+- Checkout and payments — handled by Paystack (test mode now; live when your developer switches keys after compliance)
 - Trust badges text on homepage
 - Theme (light/dark) — visitors choose in the navbar
+- Customer accounts, order history, and wishlist — planned for Phase 3 (developer-only for now)
+
+---
+
+## Project timeline
+
+See [`ROADMAP.md`](ROADMAP.md) for the full Phase 1–3 breakdown and what is done vs planned.
 
 ---
 
