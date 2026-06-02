@@ -5,7 +5,8 @@ import {
   toPaystackAmount,
   type CheckoutLineItemPayload,
   type ShippingDetails,
-} from '../lib/order'
+} from '../lib/order.js'
+import { paystackRequest } from '../lib/paystack-request.js'
 
 type InitializeBody = ShippingDetails & {
   lineItems: CheckoutLineItemPayload[]
@@ -54,13 +55,13 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
   const origin = getSiteOrigin(req)
 
-  const paystackRes = await fetch('https://api.paystack.co/transaction/initialize', {
+  const { statusCode, data } = await paystackRequest<{
+    status?: boolean
+    message?: string
+    data?: { authorization_url?: string; reference?: string }
+  }>(secretKey, '/transaction/initialize', {
     method: 'POST',
-    headers: {
-      Authorization: `Bearer ${secretKey}`,
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
+    body: {
       email,
       amount,
       currency: 'ZAR',
@@ -74,16 +75,10 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         shipping_zar: String(shipping),
         line_items: JSON.stringify(lineItems),
       },
-    }),
+    },
   })
 
-  const data = (await paystackRes.json()) as {
-    status?: boolean
-    message?: string
-    data?: { authorization_url?: string; reference?: string }
-  }
-
-  if (!paystackRes.ok || !data.status || !data.data?.authorization_url) {
+  if (statusCode < 200 || statusCode >= 300 || !data.status || !data.data?.authorization_url) {
     return res.status(502).json({
       error: data.message ?? 'Could not start Paystack checkout',
     })

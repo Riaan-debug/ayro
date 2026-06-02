@@ -1,4 +1,5 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
+import { paystackRequest } from '../lib/paystack-request.js'
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method !== 'GET') {
@@ -18,14 +19,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return res.status(400).json({ error: 'Missing payment reference' })
   }
 
-  const paystackRes = await fetch(
-    `https://api.paystack.co/transaction/verify/${encodeURIComponent(reference)}`,
-    {
-      headers: { Authorization: `Bearer ${secretKey}` },
-    },
-  )
-
-  const data = (await paystackRes.json()) as {
+  const { statusCode, data } = await paystackRequest<{
     status?: boolean
     message?: string
     data?: {
@@ -36,9 +30,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       customer?: { email?: string }
       metadata?: Record<string, string>
     }
-  }
+  }>(secretKey, `/transaction/verify/${encodeURIComponent(reference)}`)
 
-  if (!paystackRes.ok || !data.status || !data.data) {
+  if (statusCode < 200 || statusCode >= 300 || !data.status || !data.data) {
     return res.status(502).json({
       error: data.message ?? 'Could not verify payment',
     })

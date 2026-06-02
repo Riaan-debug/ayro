@@ -10,7 +10,7 @@
     "studio": "npm run dev --prefix sanity",
     "seed:sanity": "node sanity/scripts/seed.mjs",
     "fix:sanity-keys": "node sanity/scripts/fix-keys.mjs",
-    "dev:api": "vercel dev"
+    "dev:api": "node scripts/dev-api.mjs"
   },
   "devDependencies": {
     "@tailwindcss/vite": "^4.3.0",

@@ -58,7 +58,24 @@ export default function Checkout() {
         }),
       })
 
-      const data = (await res.json()) as { url?: string; error?: string }
+      const raw = await res.text()
+      let data: { url?: string; error?: string }
+      try {
+        data = JSON.parse(raw) as { url?: string; error?: string }
+      } catch {
+        if (res.status === 404) {
+          setError(
+            'Payment API not found. Stop npm run dev and use npm run dev:api, then open http://localhost:3056/checkout.',
+          )
+          return
+        }
+        setError(
+          res.ok
+            ? 'Unexpected response from payment server.'
+            : `Payment could not start (${res.status}). Try again.`,
+        )
+        return
+      }
 
       if (!res.ok || !data.url) {
         setError(data.error ?? 'Could not start payment. Try again.')
@@ -67,7 +84,9 @@ export default function Checkout() {
 
       window.location.href = data.url
     } catch {
-      setError('Network error. If testing locally, run vercel dev.')
+      setError(
+        'Could not reach the payment server. For local testing, run npm run dev:api instead of npm run dev.',
+      )
     } finally {
       setPaying(false)
     }
