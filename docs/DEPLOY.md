@@ -20,7 +20,7 @@ Redeploy after saving.
 Add:
 
 - `http://localhost:5173` (allow credentials: off)
-- `https://your-production-domain.vercel.app` (your actual Vercel URL)
+- `https://cole-roan.vercel.app` (production — update if custom domain added)
 
 ## 3. Seed CMS content (one time)
 
