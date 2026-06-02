@@ -46,7 +46,7 @@ export const site: SiteContent = {
   brandName: 'AYRO',
   logo: '/images/ayro/logo.jpeg',
   logoAlt: 'AYRO logo',
-  contactEmail: 'hello@theofficialayro.com',
+  contactEmail: 'janaejayden86@gmail.com',
   hero: {
     eyebrow: 'New Season',
     headline: ['Wear your', 'ambition.'],

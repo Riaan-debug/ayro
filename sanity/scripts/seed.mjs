@@ -93,7 +93,7 @@ async function seedSiteSettings() {
     _id: 'siteSettings',
     _type: 'siteSettings',
     brandName: 'AYRO',
-    contactEmail: 'hello@theofficialayro.com',
+    contactEmail: 'janaejayden86@gmail.com',
     logo,
     logoAlt: 'AYRO logo',
     heroEyebrow: 'New Season',
