@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom'
+import { ScrollLink } from './ScrollLink'
 import { BrandLogoLink } from './BrandLogo'
 import { useSite } from '../context/ContentContext'
 
@@ -20,20 +20,20 @@ export default function Footer() {
           <div>
             <h3 className="text-xs font-semibold uppercase tracking-widest text-neutral-900 dark:text-white">Shop</h3>
             <ul className="mt-4 space-y-2 text-sm text-neutral-600 dark:text-neutral-400">
-              <li><Link to="/shop" className={linkHover}>All Products</Link></li>
-              <li><Link to="/shop?category=essentials" className={linkHover}>Essentials</Link></li>
-              <li><Link to="/shop?category=graphics" className={linkHover}>Graphics</Link></li>
-              <li><Link to="/shop?category=limited" className={linkHover}>Limited Drops</Link></li>
+              <li><ScrollLink to="/shop" className={linkHover}>All Products</ScrollLink></li>
+              <li><ScrollLink to="/shop?category=essentials" className={linkHover}>Essentials</ScrollLink></li>
+              <li><ScrollLink to="/shop?category=graphics" className={linkHover}>Graphics</ScrollLink></li>
+              <li><ScrollLink to="/shop?category=limited" className={linkHover}>Limited Drops</ScrollLink></li>
             </ul>
           </div>
           <div>
             <h3 className="text-xs font-semibold uppercase tracking-widest text-neutral-900 dark:text-white">Support</h3>
             <ul className="mt-4 space-y-2 text-sm text-neutral-600 dark:text-neutral-400">
-              <li><Link to="/custom-orders" className={linkHover}>Custom Orders</Link></li>
-              <li><Link to="/contact" className={linkHover}>Contact Us</Link></li>
-              <li><Link to="/returns" className={linkHover}>Returns & Refunds</Link></li>
-              <li><Link to="/privacy" className={linkHover}>Privacy Policy</Link></li>
-              <li><Link to="/about" className={linkHover}>Our Story</Link></li>
+              <li><ScrollLink to="/custom-orders" className={linkHover}>Custom Orders</ScrollLink></li>
+              <li><ScrollLink to="/contact" className={linkHover}>Contact Us</ScrollLink></li>
+              <li><ScrollLink to="/returns" className={linkHover}>Returns & Refunds</ScrollLink></li>
+              <li><ScrollLink to="/privacy" className={linkHover}>Privacy Policy</ScrollLink></li>
+              <li><ScrollLink to="/about" className={linkHover}>Our Story</ScrollLink></li>
             </ul>
           </div>
           <div>

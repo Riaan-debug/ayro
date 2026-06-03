@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { ScrollLink } from './ScrollLink'
 import { useSite } from '../context/ContentContext'
 
 type Props = {
@@ -47,12 +47,12 @@ export function BrandLogoLink({
   const site = useSite()
 
   return (
-    <Link
+    <ScrollLink
       to="/"
       className="inline-flex items-center gap-2.5 transition opacity-100 hover:opacity-80"
       aria-label={`${site.brandName} home`}
     >
       <BrandLogo imageClassName={imageClassName} showText={showText} />
-    </Link>
+    </ScrollLink>
   )
 }
