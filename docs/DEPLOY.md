@@ -63,16 +63,25 @@ node sanity/scripts/seed.mjs
 
 This uploads all product images and creates Site Settings.
 
-## 4. Auto-rebuild on publish (optional)
+## 4. Auto-rebuild on publish
 
-**Vercel:** Project → Settings → Git → Deploy Hooks → Create hook → copy URL.
+A Vercel deploy hook named **`sanity-publish`** is already configured for the `main` branch.
 
-**Sanity:** API → Webhooks → Create webhook:
+List or copy the hook URL:
 
-- URL: Vercel deploy hook URL
-- Dataset: production
+```powershell
+cd e:\cole
+npx vercel deploy-hooks list
+```
+
+**Sanity:** [Create webhook](https://www.sanity.io/manage/project/xilnix6x/api/webhooks/new) → paste the deploy hook URL:
+
+- Dataset: `production`
 - Trigger on: Create, Update, Delete
 - Filter: `_type in ["product", "siteSettings"]`
+- HTTP method: POST
+
+Step-by-step: [HANDOFF.md](HANDOFF.md) §1
 
 When the client publishes in the studio, the live site rebuilds automatically.
 
@@ -88,4 +97,6 @@ When the client publishes in the studio, the live site rebuilds automatically.
 
 ## 6. Client handoff
 
-Share [`CLIENT.md`](CLIENT.md) (in this folder) and invite the client as **Editor** in Sanity → Project → Members.
+See **[HANDOFF.md](HANDOFF.md)** for the full checklist, share URLs, and handoff call agenda.
+
+Share [`CLIENT.md`](CLIENT.md) and invite the client as **Editor** in Sanity → Project → Members.

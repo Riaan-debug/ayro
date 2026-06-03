@@ -4,8 +4,8 @@ Single source of truth for project phases. Live site: [cole-roan.vercel.app](htt
 
 | Phase | Focus | Status |
 |-------|--------|--------|
-| **Phase 1** | Storefront + CMS + forms | ~complete |
-| **Phase 2** | Paystack checkout (ZAR) | Legal pages done; live keys + Paystack compliance remain |
+| **Phase 1** | Storefront + CMS + forms | Handoff-ready — client invite + Sanity webhook wiring remain |
+| **Phase 2** | Paystack checkout (ZAR) | Test mode live; Paystack compliance for real money remains |
 | **Phase 3** | Customer accounts | Not started |
 
 ---
@@ -25,9 +25,9 @@ Single source of truth for project phases. Live site: [cole-roan.vercel.app](htt
 
 ### Remaining (ops, not code)
 
-- [ ] Invite client as **Editor** in Sanity → Members
-- [ ] Share hosted studio URL (`npm run deploy` from `sanity/`)
-- [ ] Sanity → Vercel deploy webhook (auto-rebuild on publish) — see [DEPLOY.md](DEPLOY.md) §4
+- [ ] Invite client as **Editor** in Sanity → Members — see [HANDOFF.md](HANDOFF.md)
+- [x] Hosted studio URL: **https://ayro.sanity.studio** (deployed)
+- [ ] Sanity → Vercel deploy webhook — Vercel hook `sanity-publish` created; paste URL in Sanity dashboard — see [HANDOFF.md](HANDOFF.md) §1
 - [ ] Production smoke test — see [DEPLOY.md](DEPLOY.md) §5
 
 ---
