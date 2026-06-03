@@ -1,3 +1,4 @@
+import { sortSizes } from './sizes'
 import type { Product } from '../types/product'
 import { products as staticProducts } from '../data/products'
 import { site as staticSite, type SiteContent, type CategoryTile, type LegalPageContent, type LegalSectionContent, privacyPolicy as staticPrivacyPolicy, returnsPolicy as staticReturnsPolicy } from '../data/site'
@@ -198,11 +199,13 @@ function mapProducts(raw: Record<string, unknown>[]): Product[] {
       : p.image
         ? [String(p.image)]
         : [],
-    sizes: Array.isArray(p.sizes)
-      ? p.sizes.map((s) =>
-          typeof s === 'string' ? s : String((s as { value?: string }).value ?? s),
-        )
-      : [],
+    sizes: sortSizes(
+      Array.isArray(p.sizes)
+        ? p.sizes.map((s) =>
+            typeof s === 'string' ? s : String((s as { value?: string }).value ?? s),
+          )
+        : [],
+    ),
     featured: Boolean(p.featured),
   }))
 }

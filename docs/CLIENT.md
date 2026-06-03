@@ -41,7 +41,7 @@ After deploy, hard-refresh the studio (Ctrl+Shift+R) so new fields appear.
    - **Price (ZAR)** — number only, e.g. `599`
    - **Category** — Essentials, Graphics, or Limited
    - **Featured on home** — toggle for homepage carousel
-   - **Sizes** — type each size and press Enter (S, M, L, XL, etc.)
+   - **Sizes in stock** — tap each size that applies (XXS through XXXXL). No typing needed — works well on phone.
    - **Main image** — drag and drop product photo
    - **Gallery images** — optional extra angles
 4. Click **Publish**.

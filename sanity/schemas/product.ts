@@ -1,4 +1,5 @@
 import { defineField, defineType } from 'sanity'
+import { PRODUCT_SIZE_OPTIONS } from './sizeOptions'
 
 export const product = defineType({
   name: 'product',
@@ -31,10 +32,15 @@ export const product = defineType({
     defineField({ name: 'featured', title: 'Featured on home', type: 'boolean', initialValue: false }),
     defineField({
       name: 'sizes',
-      title: 'Sizes',
+      title: 'Sizes in stock',
+      description: 'Tap each size that is available for this product.',
       type: 'array',
       of: [{ type: 'string' }],
-      options: { layout: 'tags' },
+      options: {
+        list: [...PRODUCT_SIZE_OPTIONS],
+        layout: 'grid',
+      },
+      validation: (r) => r.min(1).error('Select at least one size'),
     }),
     defineField({
       name: 'mainImage',
