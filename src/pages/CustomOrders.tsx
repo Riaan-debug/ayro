@@ -5,6 +5,7 @@ import { btnPrimaryClass, inputClass } from '../lib/ui'
 type FormState = 'idle' | 'submitting' | 'submitted' | 'error'
 
 export default function CustomOrders() {
+  const today = new Date().toISOString().slice(0, 10)
   const [status, setStatus] = useState<FormState>('idle')
   const [error, setError] = useState('')
   const [form, setForm] = useState({
@@ -172,17 +173,20 @@ export default function CustomOrders() {
 
         <div>
           <label htmlFor="timeline" className="text-xs font-semibold uppercase tracking-widest">
-            Desired Timeline
+            Desired Delivery Date
           </label>
           <input
             id="timeline"
             name="timeline"
-            type="text"
-            placeholder="e.g. Need by end of August"
+            type="date"
+            min={today}
             value={form.timeline}
             onChange={handleChange}
             className={`mt-2 ${inputClass}`}
           />
+          <p className="mt-2 text-xs text-neutral-500 dark:text-neutral-400">
+            When do you need the order ready? Leave blank if flexible.
+          </p>
         </div>
 
         {error && (
