@@ -53,6 +53,16 @@ Walk through [CLIENT.md](CLIENT.md):
 3. Demo test checkout (explain: test mode — real payments after Paystack compliance)
 4. Show contact and custom order forms
 
+### 4. Formspree notifications (developer)
+
+See [CLIENT.md — Formspree](CLIENT.md#contact--custom-order-emails-formspree) for what to tell the client.
+
+1. **Account** → add client email as linked email → client must **verify** (PENDING → VERIFIED).
+2. For **Contact** and **Custom orders**: open **Workflow** (not Settings) → **Email** action → set target to the client’s verified address.
+3. Test submit on production; client confirms email received.
+
+You can keep the Formspree account and only route emails to the client (no Vercel changes). Full account transfer requires new form IDs in env vars — only if the client must own the dashboard.
+
 ---
 
 ## Set expectations

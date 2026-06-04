@@ -101,6 +101,30 @@ The live site updates after the next deploy (automatic if webhooks are configure
 
 ---
 
+## Contact & custom order emails (Formspree)
+
+When someone uses **Contact** or **Custom orders** on the live shop, you receive an email notification (you do not need to log into Formspree for that).
+
+### If your developer added your email
+
+1. Check your inbox for a message from **Formspree** asking you to **verify** your address (`janaejayden86@gmail.com` or whichever email they used).
+2. Click the link in that email. Until it shows **VERIFIED**, notifications may still go only to your developer.
+3. After verification, ask your developer to confirm both forms (**Contact** and **Custom orders**) send to your address. They do this in Formspree under each form’s **Workflow** → **Email** action (not under Settings).
+4. Submit a test message on the live site and check **Inbox** and **Spam**.
+
+### What you will receive
+
+- **Contact** — name, email, message from visitors.
+- **Custom orders** — order details (style, sizes, timeline, etc.) from the custom order form.
+
+Submissions are also stored in your developer’s Formspree dashboard for about 30 days on the free plan. If you later want your own login to view all submissions, ask your developer to transfer the account or add you on a team plan.
+
+### You do not need Formspree to run the shop
+
+The website is already connected. Verifying your email is only so **you** get the notification emails directly.
+
+---
+
 ## What you cannot edit in Sanity (yet)
 
 - Checkout and payments — handled by Paystack (test mode now; live when your developer switches keys after compliance)
