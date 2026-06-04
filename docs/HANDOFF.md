@@ -24,9 +24,9 @@ Use this when handing the store to the client. Live shop: **https://cole-roan.ve
 
 ---
 
-## You still need to do (5–10 min)
+## You still need to do
 
-### 1. Connect Sanity → Vercel auto-rebuild
+### 1. Connect Sanity → Vercel auto-rebuild (if not done yet)
 
 The Vercel deploy hook exists. Wire it in Sanity:
 
@@ -42,9 +42,9 @@ The Vercel deploy hook exists. Wire it in Sanity:
 
 ### 2. Invite the client in Sanity
 
-[sanity.io/manage](https://www.sanity.io/manage) → project **xilnix6x** → **Members** → Invite **janaejayden86@gmail.com** as **Editor**
+- [x] **janaejayden86@gmail.com** invited as **Editor** — client can use https://ayro.sanity.studio
 
-### 3. Handoff call (~30 min)
+### 3. Handoff call (~30 min) — optional if client already comfortable
 
 Walk through [CLIENT.md](CLIENT.md):
 
@@ -75,10 +75,15 @@ You can keep the Formspree account and only route emails to the client (no Verce
 
 ## Production smoke test
 
-Run through [DEPLOY.md](DEPLOY.md) §5 before the client call:
+Run through [DEPLOY.md](DEPLOY.md) §5:
 
-- [ ] Homepage + shop + product detail
-- [ ] Add to bag → Paystack test checkout → order confirmed
-- [ ] `/privacy` and `/returns` from footer
-- [ ] Contact + custom order forms (Formspree inbox)
-- [ ] Sanity publish → live site updates (after webhook in step 1)
+- [x] Homepage + shop + product detail
+- [x] Add to bag → Paystack test checkout → order confirmed
+- [x] `/privacy` and `/returns` from footer
+- [x] Contact + custom order forms (Formspree inbox)
+- [ ] Sanity publish → live site updates (confirm webhook in step 1)
+
+## Blocked on client / Paystack
+
+- [ ] Formspree: client verifies email → developer sets Workflow → Email on both forms
+- [ ] Paystack: compliance approved → live key in Vercel ([DEPLOY.md](DEPLOY.md) §1c)

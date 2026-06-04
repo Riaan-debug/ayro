@@ -4,9 +4,9 @@ Single source of truth for project phases. Live site: [cole-roan.vercel.app](htt
 
 | Phase | Focus | Status |
 |-------|--------|--------|
-| **Phase 1** | Storefront + CMS + forms | Handoff-ready — client invite + Sanity webhook wiring remain |
-| **Phase 2** | Paystack checkout (ZAR) | Test mode live; Paystack compliance for real money remains |
-| **Phase 3** | Customer accounts | Not started |
+| **Phase 1** | Storefront + CMS + forms | Complete — optional: confirm Sanity→Vercel webhook |
+| **Phase 2** | Paystack checkout (ZAR) | Test mode live; waiting on Paystack compliance + live keys |
+| **Phase 3** | Customer accounts | Not started — optional future scope, not required for launch |
 
 ---
 
@@ -25,10 +25,11 @@ Single source of truth for project phases. Live site: [cole-roan.vercel.app](htt
 
 ### Remaining (ops, not code)
 
-- [ ] Invite client as **Editor** in Sanity → Members — see [HANDOFF.md](HANDOFF.md)
+- [x] Invite client as **Editor** in Sanity — see [HANDOFF.md](HANDOFF.md)
 - [x] Hosted studio URL: **https://ayro.sanity.studio** (deployed)
-- [ ] Sanity → Vercel deploy webhook — Vercel hook `sanity-publish` created; paste URL in Sanity dashboard — see [HANDOFF.md](HANDOFF.md) §1
-- [ ] Production smoke test — see [DEPLOY.md](DEPLOY.md) §5
+- [ ] Sanity → Vercel deploy webhook — confirm wired — see [HANDOFF.md](HANDOFF.md) §1
+- [x] Production smoke test — see [DEPLOY.md](DEPLOY.md) §5
+- [ ] Formspree: client verifies email; route notifications via Workflow
 
 ---
 

@@ -6,6 +6,8 @@ React + TypeScript + Vite + Tailwind CSS storefront for the AYRO clothing brand.
 
 **Client handoff:** See [`docs/HANDOFF.md`](docs/HANDOFF.md).
 
+**New machine / continue development:** See [`docs/DEVELOPER.md`](docs/DEVELOPER.md).
+
 ## Features
 
 - Shop with category filters, product detail, cart (editable at checkout), and Paystack checkout (ZAR)
