@@ -31,6 +31,13 @@ export const product = defineType({
     }),
     defineField({ name: 'featured', title: 'Featured on home', type: 'boolean', initialValue: false }),
     defineField({
+      name: 'showOnShop',
+      title: 'Show on shop',
+      description: 'Turn off to hide this product from the website without deleting it.',
+      type: 'boolean',
+      initialValue: true,
+    }),
+    defineField({
       name: 'sizes',
       title: 'Sizes in stock',
       description: 'Tap each size that is available for this product.',

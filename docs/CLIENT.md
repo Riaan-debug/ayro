@@ -50,6 +50,39 @@ The live site updates after the next deploy (automatic if webhooks are configure
 
 ---
 
+## Remove a product from the shop
+
+**Important:** The small **trash / remove** icon on an **image field** only deletes that photo — it does **not** remove the product from the website.
+
+### Option A — Hide from shop (easiest)
+
+1. Open the product in the studio.
+2. If **Main image** shows a red **!** and **Publish** is greyed out: click **⋯** (next to the Publish button, bottom right) → **Discard changes** to undo a bad edit.
+3. Turn off **Show on shop** (toggle near the bottom of the form).
+4. Click **Publish**.
+
+The product disappears from the live shop after a refresh. It stays in the studio if you want it back later.
+
+### Option B — Delete permanently
+
+1. Open the product.
+2. Click the **⋯** button **right beside the Publish button** (bottom-right corner — not the image field trash icon).
+3. Choose **Delete** → confirm.
+
+You do **not** Publish after deleting.
+
+### Option C — Unpublish
+
+Same **⋯** menu (beside Publish) → **Unpublish**. Hides the product on the live site; keeps a draft in the studio.
+
+### If the shirt is still visible
+
+- You may have only removed an image on a **draft** while the **published** copy is still live (green dot in the list). Use **Discard changes**, then hide or delete as above.
+- Hard-refresh the shop (Ctrl+Shift+R).
+- Ask your developer if it still appears.
+
+---
+
 ## Edit site-wide content
 
 Open the **Site Settings** document (only one exists).

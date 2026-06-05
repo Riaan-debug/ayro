@@ -50,7 +50,7 @@ async function sanityQuery<T>(query: string): Promise<T> {
   return json.result
 }
 
-const PRODUCTS_QUERY = `*[_type == "product"] | order(_createdAt asc) {
+const PRODUCTS_QUERY = `*[_type == "product" && showOnShop != false] | order(_createdAt asc) {
   "id": _id,
   name,
   "slug": slug.current,
@@ -184,7 +184,8 @@ function mapSite(raw: Record<string, unknown> | null): SiteContent {
 }
 
 function mapProducts(raw: Record<string, unknown>[]): Product[] {
-  if (!raw.length) return staticProducts
+  // Sanity is configured — trust the API result (even if empty after deletions).
+  if (!raw.length) return []
 
   return raw.map((p) => ({
     id: String(p.id),
