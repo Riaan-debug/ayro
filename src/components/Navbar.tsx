@@ -1,4 +1,5 @@
 import { NavLink } from 'react-router-dom'
+import { useAuth } from '../context/AuthContext'
 import { useCart } from '../context/CartContext'
 import { BrandLogoLink } from './BrandLogo'
 import ThemeToggle from './ThemeToggle'
@@ -11,6 +12,7 @@ const navLinkClass = ({ isActive }: { isActive: boolean }) =>
   }`
 
 export default function Navbar() {
+  const { configured, user } = useAuth()
   const { itemCount, openCart } = useCart()
 
   return (
@@ -34,6 +36,14 @@ export default function Navbar() {
         </nav>
 
         <div className="flex items-center gap-3">
+          {configured && (
+            <NavLink
+              to={user ? '/account' : '/login'}
+              className={navLinkClass}
+            >
+              {user ? 'Account' : 'Log in'}
+            </NavLink>
+          )}
           <ThemeToggle />
           <button
             type="button"

@@ -1,5 +1,6 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import { useAuth } from '../context/AuthContext'
 import { useCart } from '../context/CartContext'
 import { useSite } from '../context/ContentContext'
 import { formatPrice, FREE_SHIPPING_THRESHOLD, SHIPPING_COST } from '../lib/currency'
@@ -9,6 +10,7 @@ import CartLineItem from '../components/CartLineItem'
 export default function Checkout() {
   const site = useSite()
   const { items, subtotal, getLineItems } = useCart()
+  const { user } = useAuth()
   const navigate = useNavigate()
   const [email, setEmail] = useState('')
   const [name, setName] = useState('')
@@ -17,6 +19,15 @@ export default function Checkout() {
   const [zip, setZip] = useState('')
   const [paying, setPaying] = useState(false)
   const [error, setError] = useState('')
+
+  useEffect(() => {
+    if (!user) return
+    setEmail((current) => current || (user.email ?? ''))
+    const fullName = user.user_metadata?.full_name
+    if (typeof fullName === 'string') {
+      setName((current) => current || fullName)
+    }
+  }, [user])
 
   const shipping = subtotal >= FREE_SHIPPING_THRESHOLD ? 0 : SHIPPING_COST
   const total = subtotal + shipping
@@ -56,6 +67,7 @@ export default function Checkout() {
           city,
           zip,
           lineItems: getLineItems(),
+          ...(user ? { userId: user.id } : {}),
         }),
       })
 

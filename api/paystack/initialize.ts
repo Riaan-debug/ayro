@@ -10,6 +10,8 @@ import { paystackRequest } from '../lib/paystack-request.js'
 
 type InitializeBody = ShippingDetails & {
   lineItems: CheckoutLineItemPayload[]
+  /** Optional Supabase user id — present only for signed-in customers. */
+  userId?: string
 }
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
@@ -24,7 +26,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 
   const body = req.body as InitializeBody
-  const { email, name, address, city, zip, lineItems } = body ?? {}
+  const { email, name, address, city, zip, lineItems, userId } = body ?? {}
 
   if (!email || !name || !address || !city || !zip) {
     return res.status(400).json({ error: 'Missing shipping details' })
@@ -74,6 +76,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         subtotal_zar: String(subtotal),
         shipping_zar: String(shipping),
         line_items: JSON.stringify(lineItems),
+        ...(typeof userId === 'string' && userId ? { user_id: userId } : {}),
       },
     },
   })

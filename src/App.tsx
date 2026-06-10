@@ -12,6 +12,10 @@ import About from './pages/About'
 import Contact from './pages/Contact'
 import Privacy from './pages/Privacy'
 import Returns from './pages/Returns'
+import Login from './pages/Login'
+import Signup from './pages/Signup'
+import Account from './pages/Account'
+import ProtectedRoute from './components/ProtectedRoute'
 
 export default function App() {
   return (
@@ -30,6 +34,16 @@ export default function App() {
         <Route path="contact" element={<Contact />} />
         <Route path="privacy" element={<Privacy />} />
         <Route path="returns" element={<Returns />} />
+        <Route path="login" element={<Login />} />
+        <Route path="signup" element={<Signup />} />
+        <Route
+          path="account"
+          element={
+            <ProtectedRoute>
+              <Account />
+            </ProtectedRoute>
+          }
+        />
       </Route>
       </Routes>
       </ContentGate>

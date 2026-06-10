@@ -6,7 +6,7 @@ Single source of truth for project phases. Live site: [cole-roan.vercel.app](htt
 |-------|--------|--------|
 | **Phase 1** | Storefront + CMS + forms | Complete — optional: confirm Sanity→Vercel webhook |
 | **Phase 2** | Paystack checkout (ZAR) | Test mode live; waiting on Paystack compliance + live keys |
-| **Phase 3** | Customer accounts | Not started — optional future scope, not required for launch |
+| **Phase 3** | Customer accounts | Auth foundation built (Supabase) — hidden until env keys are set |
 
 ---
 
@@ -67,35 +67,55 @@ See [DEPLOY.md](DEPLOY.md) for env vars, test cards, and handoff checklist.
 
 ---
 
-## Phase 3 — Customer accounts (planned)
+## Phase 3 — Customer accounts (in progress)
 
 **Goal:** Returning customers can log in and manage their relationship with the store.
 
-**Not started** — no auth routes or libraries in the repo today.
+### Architecture (decided)
 
-### Planned scope
-
-| Feature | Description |
-|---------|-------------|
-| Login / signup | Likely Supabase Auth (or similar provider) |
-| Account area | Profile page after login |
-| Order history | Link Paystack payment references (or webhook-stored orders) to user accounts |
-| Saved addresses | Pre-fill checkout shipping for logged-in customers |
-| Wishlist | Persist saved items beyond browser `localStorage` |
-
-### Prerequisites
-
-Phase 2 live payments plus order storage (Paystack webhook or database) so order history has data to display.
+| Concern | Where | Why |
+|---------|-------|-----|
+| Identity & sessions | **Supabase Auth** (`@supabase/supabase-js`) | Managed auth for a Vite SPA — no custom JWT/password code |
+| Saved addresses | **Supabase Postgres** (per-user table, RLS) | PII stays behind row-level security; pre-fills checkout |
+| Order records | **Sanity `order` documents**, written server-side via Paystack webhook + `SANITY_TOKEN` | Merchant sees orders in the studio they already use; never client-readable |
+| Order history API | `GET /api/account/orders` — verifies Supabase JWT, queries Sanity by `user_id`/email | Orders stay server-side; SPA never holds a Sanity write token |
+| Products & copy | **Sanity** (unchanged) | CMS stays content-only — no users or PII in the content lake |
 
 ```mermaid
 flowchart LR
-  phase2[Phase2_Paystack] --> orders[Order_records]
-  orders --> phase3[Phase3_Accounts]
-  phase3 --> auth[Login_Signup]
-  phase3 --> history[Order_history]
-  phase3 --> wishlist[Wishlist]
-  phase3 --> addresses[Saved_addresses]
+  spa[Vite SPA] -->|anon key, RLS| supa[(Supabase: auth + addresses)]
+  spa -->|public CDN| sanity[(Sanity: products + copy)]
+  spa --> init["api/paystack/initialize (+ user_id)"]
+  init --> ps[Paystack]
+  ps -->|signed webhook| hook["api/paystack/webhook"]
+  hook -->|SANITY_TOKEN| orders[(Sanity: order docs)]
+  spa -->|Supabase JWT| ordersApi["api/account/orders"] --> orders
 ```
+
+### 3.1 Auth foundation — delivered
+
+- `src/lib/supabase.ts` — client; **null when `VITE_SUPABASE_*` env vars are missing**, so the site runs guest-only with zero account UI (same graceful degradation as Sanity/Formspree)
+- `src/context/AuthContext.tsx` — session restore, `signIn` / `signUp` / `signOut`, `updateProfile`
+- `api/lib/auth.ts` + `GET /api/auth/me` — server-side JWT verification when Supabase is configured
+- `/login`, `/signup`, and `/account` (profile + placeholders), guarded by `ProtectedRoute`
+- Navbar shows **Log in / Account** only when auth is configured
+- Checkout pre-fills email/name for signed-in customers and sends `userId`; `api/paystack/initialize` adds `user_id` to Paystack metadata so the future webhook can link orders to accounts. **Guest checkout is unchanged.**
+- `supabase/schema.sql` — `customer_profiles` + `saved_addresses` with RLS (orders live in Sanity, not Postgres)
+
+To enable: create a Supabase project, run `supabase/schema.sql`, then set `VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY`, `SUPABASE_URL`, and `SUPABASE_SERVICE_ROLE_KEY` in Vercel + `.env.local`.
+
+### 3.2 Remaining scope
+
+| Feature | Plan |
+|---------|------|
+| Order storage | `api/paystack/webhook.ts` — verify `x-paystack-signature` (HMAC-SHA512), create Sanity `order` doc; add `order` schema to studio |
+| Order history | `GET /api/account/orders` (JWT-verified) + orders list on `/account` |
+| Saved addresses | Supabase `saved_addresses` CRUD on `/account`, pre-fill checkout |
+| Wishlist | Supabase table keyed by user; replaces `localStorage`-only saves |
+
+### Prerequisites
+
+Phase 2 live payments plus the Paystack webhook (3.2) so order history has data to display.
 
 ---
 
