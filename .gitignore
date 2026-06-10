@@ -29,3 +29,6 @@ sanity/.sanity
 *.sw?
 
 .vercel
+
+# Local reference clones (not part of the repo)
+_ref-*/

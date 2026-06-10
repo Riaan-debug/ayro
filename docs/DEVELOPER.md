@@ -34,6 +34,10 @@ Copy from [`.env.example`](../.env.example) and fill in (match Vercel Production
 | `VITE_FORMSPREE_CONTACT_ID` | `xbdbvyzq` |
 | `VITE_FORMSPREE_CUSTOM_ORDER_ID` | `xjgzqraz` |
 | `PAYSTACK_SECRET_KEY` | `sk_test_...` from Paystack (server only, no `VITE_` prefix) |
+| `VITE_SUPABASE_URL` | Supabase project URL (optional — enables accounts UI) |
+| `VITE_SUPABASE_ANON_KEY` | Supabase anon key |
+| `SUPABASE_URL` | Same as project URL (server API routes) |
+| `SUPABASE_SERVICE_ROLE_KEY` | Supabase service role — server only, never `VITE_` |
 
 Optional: `SITE_URL` for API callbacks if not using `vercel dev` host headers.
 
@@ -77,6 +81,8 @@ Build check: `npm run build`
 
 Studio deploy (after schema changes): stop dev servers, then `cd sanity && npm run deploy` (hostname **`ayro`**).
 
+Run `supabase/schema.sql` in Supabase SQL editor when enabling accounts.
+
 Full production checklist: [DEPLOY.md](DEPLOY.md)  
 Client handoff: [HANDOFF.md](HANDOFF.md)  
 Roadmap: [ROADMAP.md](ROADMAP.md)
@@ -91,7 +97,7 @@ Roadmap: [ROADMAP.md](ROADMAP.md)
 2. **Paystack** — Business activation **PENDING** → then live `sk_live_...` in Vercel ([DEPLOY.md](DEPLOY.md) §1c) + one live payment test.
 3. **Optional verify** — Sanity webhook → Vercel rebuild; smoke test checklist in [HANDOFF.md](HANDOFF.md).
 
-**Phase 3** (customer accounts) — not required for launch; optional future work. See [ROADMAP.md](ROADMAP.md).
+**Phase 3** — Auth (login/signup/account) is built; enabled when Supabase env vars are set. Order history / webhooks still future work. See [ROADMAP.md](ROADMAP.md).
 
 ---
 

@@ -69,7 +69,7 @@ You can keep the Formspree account and only route emails to the client (no Verce
 
 - **Today:** Store is handoff-ready with **test payments**
 - **Real money:** Client completes Paystack Owner + Account compliance → you swap to `sk_live_...` in Vercel ([DEPLOY.md](DEPLOY.md) §1c)
-- **Phase 3 (later):** Login, order history, wishlist — see [ROADMAP.md](ROADMAP.md)
+- **Phase 3:** Customer accounts (login/signup) — live when Supabase env vars are set; order history still planned — see [ROADMAP.md](ROADMAP.md)
 
 ---
 

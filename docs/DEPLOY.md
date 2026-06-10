@@ -6,7 +6,7 @@
 |-------|--------|
 | Phase 1 — Storefront + CMS | ~complete |
 | Phase 2 — Paystack checkout | Legal pages live; test mode OK — live keys + Paystack compliance remain |
-| Phase 3 — Customer accounts | Not started |
+| Phase 3 — Customer accounts | Auth foundation live (Supabase); order history / webhooks remain |
 
 ---
 
